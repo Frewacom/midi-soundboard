@@ -41,6 +41,16 @@
         </widget>
        </item>
        <item>
+        <widget class="QListWidget" name="listWidget"/>
+       </item>
+       <item>
+        <widget class="QProgressBar" name="progressBar">
+         <property name="value">
+          <number>24</number>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="playSong">
          <property name="text">
           <string>Play</string>
