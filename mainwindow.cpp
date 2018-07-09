@@ -12,9 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QString styleSheet = QLatin1String(file.readAll());
     ui->centralWidget->setStyleSheet(styleSheet);
 
-    //this->m_engine = createIrrKlangDevice();
-    //RtMidiIn *in = new RtMidiIn();
-    //qDebug() << in->getPortCount();
+    //this->MIDI = new MidiWrapper();
 }
 
 MainWindow::~MainWindow()
@@ -22,9 +20,3 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//void MainWindow::on_playSong_clicked()
-//{
-    //QDir music(QCoreApplication::applicationDirPath());
-
-    //this->m_engine->play2D(music.filePath("music/shootingstars.wav").toStdString().c_str());
-//}

@@ -25,11 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    midiwrapper.cpp \
+    logger.cpp \
+    mididevice.cpp
 
 HEADERS += \
         mainwindow.h \
-    include/RtMidi.h
+    midiwrapper.h \
+    logger.h \
+    mididevice.h
 
 FORMS += \
         mainwindow.ui

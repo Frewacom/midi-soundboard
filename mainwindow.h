@@ -5,7 +5,7 @@
 #include <QDir>
 #include <QDebug>
 #include <irrKlang.h>
-#include <RtMidi.h>
+#include "midiwrapper.h"
 
 using namespace irrklang;
 
@@ -21,8 +21,11 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    MidiWrapper *MIDI;
+
 private:
     Ui::MainWindow *ui;
+
 };
 
 #endif // MAINWINDOW_H
