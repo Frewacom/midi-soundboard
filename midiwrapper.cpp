@@ -7,11 +7,6 @@ MidiWrapper::MidiWrapper() {
         Logger::DisplayError(
             QString::fromStdString(error.getMessage())
         );
-
-        // When the logging dialog has been implemented,
-        // this should be removed and be ran when the dialog
-        // has been closed
-        exit(EXIT_FAILURE);
     }
 
     this->GetMidiDevices();
@@ -23,21 +18,41 @@ void MidiWrapper::GetMidiDevices() {
 
     // Since we might call this one manually later on in the program
     // we must make sure to clear and resize the vector before using
-    if (!this->_midiDevices.empty()) {
-        this->_midiDevices.clear();
-        this->_midiDevices.resize(deviceCount);
+    if (!this->MidiDevices.empty()) {
+        this->MidiDevices.clear();
+        this->MidiDevices.resize(deviceCount);
     } else {
-        this->_midiDevices.reserve(deviceCount);
+        this->MidiDevices.reserve(deviceCount);
     }
 
-    for (unsigned int i = 0; i < deviceCount; i++) {
-        this->_midiDevices.push_back({
-            QString::fromStdString(this->_midi->getPortName(i)),
-            i
-        });
+    if (deviceCount > 0) {
+        for (unsigned int i = 0; i < deviceCount; i++) {
+            this->MidiDevices.push_back({
+                QString::fromStdString(this->_midi->getPortName(i)),
+                i
+            });
+            Logger::Debug(QString::fromStdString(this->_midi->getPortName(i)));
+        }
+    } else {
+        Logger::Debug("MIDI-device count is 0");
     }
 }
 
+bool MidiWrapper::Connect(MidiDevice *device) {
+    try {
+        this->_midi->openPort(device->Port);
+    } catch (RtMidiError &error) {
+        Logger::DisplayError(
+            QString::fromStdString(error.getMessage())
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
 MidiWrapper::~MidiWrapper() {
+    this->MidiDevices.clear();
     delete this->_midi;
 }

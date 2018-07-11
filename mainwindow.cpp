@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QString styleSheet = QLatin1String(file.readAll());
     ui->centralWidget->setStyleSheet(styleSheet);
 
-    //this->MIDI = new MidiWrapper();
+    this->MIDI = new MidiWrapper();
 }
 
 MainWindow::~MainWindow()

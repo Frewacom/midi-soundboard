@@ -26,6 +26,11 @@ public:
 private:
     Ui::MainWindow *ui;
 
+    void MIDICallback(
+        double deltatime,
+        std::vector<unsigned char> *message,
+        void *userData
+    );
 };
 
 #endif // MAINWINDOW_H

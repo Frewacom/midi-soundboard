@@ -28,13 +28,15 @@ SOURCES += \
         mainwindow.cpp \
     midiwrapper.cpp \
     logger.cpp \
-    mididevice.cpp
+    mididevice.cpp \
+    include/RtMidi.cpp
 
 HEADERS += \
         mainwindow.h \
     midiwrapper.h \
     logger.h \
-    mididevice.h
+    mididevice.h \
+    include/RtMidi.h
 
 FORMS += \
         mainwindow.ui
