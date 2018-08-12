@@ -7,11 +7,6 @@ MidiWrapper::MidiWrapper() {
         Logger::DisplayError(
             QString::fromStdString(error.getMessage())
         );
-
-        // When the logging dialog has been implemented,
-        // this should be removed and be ran when the dialog
-        // has been closed
-        exit(EXIT_FAILURE);
     }
 
     this->ScanForMidiDevices();
@@ -36,13 +31,28 @@ void MidiWrapper::ScanForMidiDevices() {
 
         for (unsigned int i = 0; i < deviceCount; i++) {
             this->Devices.push_back({
-                QString::fromStdString(this->_midi->getPortName(i)),
-                i
+                    QString::fromStdString(this->_midi->getPortName(i)),
+                    i
             });
         }
     }
 }
 
+bool MidiWrapper::Connect(MidiDevice *device) {
+    try {
+        this->_midi->openPort(device->Port);
+    } catch (RtMidiError &error) {
+        Logger::DisplayError(
+            QString::fromStdString(error.getMessage())
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
 MidiWrapper::~MidiWrapper() {
+    this->MidiDevices.clear();
     delete this->_midi;
 }

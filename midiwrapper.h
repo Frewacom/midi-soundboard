@@ -2,7 +2,6 @@
 #define MIDIWRAPPER_H
 
 #include <QString>
-
 #include <RtMidi.h>
 #include "logger.h"
 
@@ -20,6 +19,8 @@ public:
     std::vector<MidiDevice> Devices;
 
     void ScanForMidiDevices();
+    void GetMidiDevices();
+    bool Connect(MidiDevice *device);
 
 private:
     // Functions
