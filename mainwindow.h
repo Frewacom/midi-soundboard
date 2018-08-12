@@ -6,7 +6,9 @@
 #include <QMap>
 #include <QDebug>
 #include <irrKlang.h>
+#include <QListWidgetItem>
 #include "midiwrapper.h"
+#include "helpers.h"
 
 using namespace irrklang;
 
@@ -27,6 +29,8 @@ public:
 private slots:
     void on_DeviceSelectionRescanButton_clicked();
     void on_HeaderButton_clicked();
+
+    void on_DeviceSelectionList_itemClicked(QListWidgetItem *item);
 
 private:
     Ui::MainWindow *ui;

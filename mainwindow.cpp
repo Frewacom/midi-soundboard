@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->_addDevicesToSelectionList();
     this->_activeHeaderButton = ui->HeaderDevicesButton;
     this->_activeHeaderButton->setChecked(true);
+    ui->DeviceSelectionSaveButton->setDisabled(true);
 
     this->_buttonIdentifiers.insert(ui->HeaderDevicesButton, 0);
     this->_buttonIdentifiers.insert(ui->HeaderBindingsButton, 1);
@@ -57,9 +58,16 @@ void MainWindow::on_HeaderButton_clicked() {
     ui->ScreenWidget->setCurrentIndex(this->_buttonIdentifiers[button]);
 }
 
+void MainWindow::on_DeviceSelectionList_itemClicked(QListWidgetItem *item) {
+    if (!ui->DeviceSelectionSaveButton->isEnabled()) {
+        ui->DeviceSelectionSaveButton->setEnabled(true);
+    }
+}
+
 void MainWindow::on_DeviceSelectionRescanButton_clicked() {
     this->MIDI->ScanForMidiDevices();
     this->_addDevicesToSelectionList();
+    ui->DeviceSelectionSaveButton->setEnabled(false);
 }
 
 MainWindow::~MainWindow() {

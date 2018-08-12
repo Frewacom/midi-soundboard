@@ -11,7 +11,7 @@ QFrame
 
 QPushButton
 {
-    background-color: #3F8CFF;
+    background-color: #2B7CF5;
 	border: none;
 	color: white;
 	font-weight: bold;
@@ -22,13 +22,20 @@ QPushButton
 
 QPushButton:hover
 {
-    background-color: #2B7CF5;
+    background-color: #236DDC;
     color: white;
 }
 
 QFrame#Header
 {
-    border-bottom: 1px solid #292929;
+    background-color: #121212;
+    border-bottom: 1px solid #161616;
+}
+
+QFrame[accessibleName="sub-header"]
+{
+    background-color: #121212;
+    padding: 8px 10px;
 }
 
 QPushButton[accessibleName="btn-header"]
@@ -50,7 +57,7 @@ QPushButton[accessibleName="btn-header"]:hover:!checked
 
 QPushButton[accessibleName="btn-header"]:checked
 {
-    border-bottom: 2px solid #3F8CFF;
+    border-bottom: 2px solid #2B7CF5;
     color: white;
 }
 
@@ -59,26 +66,56 @@ QPushButton[accessibleName="btn-transparent"]
     background-color: transparent;
     color: white;
     font-size: 13px;
+    padding: 0px;
+}
+
+QPushButton[accessibleName="btn-save"]
+{
+    background-color: white; 
+    border-radius: 0px;
+    padding: 8px 0px;
+    color: #333;
+    font-size: 14px;
+	qproperty-icon: url(":/icons/check.svg");
+	qproperty-iconSize: 14px 14px;
+}
+
+QPushButton[accessibleName="btn-save"]:disabled
+{
+    background-color: #2A2A2A;
+    color: #505050;
+	qproperty-icon: none;
+}
+
+QPushButton[accessibleName="btn-save"]:hover
+{
+    background-color: #E4E4E4;
+}
+
+*[accessibleName="main-content"]
+{
+    padding: 8px;
+    background-color: transparent;
 }
 
 QListWidget
 {
-    background-color: transparent;
     outline: 0;
+    font-size: 13px;
 }
 
 QListWidget:item
 {
-    border-bottom: 1px solid #292929;
+    border-bottom: 1px solid #2A2A2A;
     padding: 10px 5px;
     color: white;
-    font-size: 12px;
+    border-radius: 2px;
 }
 
 QListWidget:item:selected
 {
-    background-color: #121212;
-    border-color: transparent;
+    background-color: #2A2A2A;
+    border-color: #2A2A2A;
 }
 
 QLabel#DeviceSelectionTitle

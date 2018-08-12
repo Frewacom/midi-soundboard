@@ -28,13 +28,15 @@ SOURCES += \
         mainwindow.cpp \
     midiwrapper.cpp \
     logger.cpp \
-    include/RtMidi.cpp
+    include/RtMidi.cpp \
+    helpers.cpp
 
 HEADERS += \
         mainwindow.h \
     midiwrapper.h \
     logger.h \
-    include/RtMidi.h
+    include/RtMidi.h \
+    helpers.h
 
 FORMS += \
         mainwindow.ui
@@ -48,3 +50,5 @@ DEPENDPATH += $$PWD/include
 
 RESOURCES += \
     resources.qrc
+
+DISTFILES +=
