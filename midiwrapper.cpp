@@ -53,6 +53,6 @@ bool MidiWrapper::Connect(MidiDevice *device) {
 }
 
 MidiWrapper::~MidiWrapper() {
-    this->MidiDevices.clear();
+    this->Devices.clear();
     delete this->_midi;
 }
