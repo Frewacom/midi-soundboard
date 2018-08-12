@@ -1,5 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>styles/main.css</file>
+        <file>icons/tune.svg</file>
+        <file>icons/device.svg</file>
+        <file>icons/bindings.svg</file>
+        <file>icons/settings.svg</file>
+        <file>icons/refresh.svg</file>
     </qresource>
 </RCC>

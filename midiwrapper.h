@@ -17,14 +17,15 @@ public:
     MidiWrapper();
     ~MidiWrapper();
 
-    void GetMidiDevices();
+    std::vector<MidiDevice> Devices;
+
+    void ScanForMidiDevices();
 
 private:
     // Functions
 
     // Variables
     RtMidiIn *_midi;
-    std::vector<MidiDevice> _midiDevices;
 };
 
 #endif // MIDIWRAPPER_H

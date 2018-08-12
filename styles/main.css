@@ -1,4 +1,88 @@
 QWidget[accessibleName="Application"]
 {
-    background-color: rgb(34, 34, 34);
+    background-color: #212121;
+}
+
+QFrame
+{
+    border: none;
+    padding: 0px;
+}
+
+QPushButton
+{
+    background-color: #3F8CFF;
+	border: none;
+	color: white;
+	font-weight: bold;
+	border-radius: 2px;
+	padding: 4px 10px;
+    font-size: 12px;
+}
+
+QPushButton:hover
+{
+    background-color: #2B7CF5;
+    color: white;
+}
+
+QFrame#Header
+{
+    border-bottom: 1px solid #292929;
+}
+
+QPushButton[accessibleName="btn-header"]
+{
+    color: #737373;
+    background-color: transparent;
+    padding: 10px 12px;
+    qproperty-iconSize: 14px 14px;
+    border-radius: 0px;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+    font-size: 13px;
+}
+
+QPushButton[accessibleName="btn-header"]:hover:!checked
+{
+    color: white;
+}
+
+QPushButton[accessibleName="btn-header"]:checked
+{
+    border-bottom: 2px solid #3F8CFF;
+    color: white;
+}
+
+QPushButton[accessibleName="btn-transparent"]
+{
+    background-color: transparent;
+    color: white;
+    font-size: 13px;
+}
+
+QListWidget
+{
+    background-color: transparent;
+    outline: 0;
+}
+
+QListWidget:item
+{
+    border-bottom: 1px solid #292929;
+    padding: 10px 5px;
+    color: white;
+    font-size: 12px;
+}
+
+QListWidget:item:selected
+{
+    background-color: #121212;
+    border-color: transparent;
+}
+
+QLabel#DeviceSelectionTitle
+{
+    color: white;
+    font-weight: bold;
 }

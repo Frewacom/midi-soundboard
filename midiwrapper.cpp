@@ -14,27 +14,32 @@ MidiWrapper::MidiWrapper() {
         exit(EXIT_FAILURE);
     }
 
-    this->GetMidiDevices();
+    this->ScanForMidiDevices();
 }
 
 // Public functions
-void MidiWrapper::GetMidiDevices() {
+void MidiWrapper::ScanForMidiDevices() {
     unsigned int deviceCount = this->_midi->getPortCount();
 
-    // Since we might call this one manually later on in the program
-    // we must make sure to clear and resize the vector before using
-    if (!this->_midiDevices.empty()) {
-        this->_midiDevices.clear();
-        this->_midiDevices.resize(deviceCount);
-    } else {
-        this->_midiDevices.reserve(deviceCount);
-    }
+    // This will cause problems if one device is removed and another one
+    // added between launch and doing a rescan
+    if (deviceCount != this->Devices.size()) {
+        // Since we might call this one manually later on in the program
+        // we must make sure to clear and resize the vector before using
+        this->Devices.clear();
 
-    for (unsigned int i = 0; i < deviceCount; i++) {
-        this->_midiDevices.push_back({
-            QString::fromStdString(this->_midi->getPortName(i)),
-            i
-        });
+        if (!this->Devices.empty()) {
+            this->Devices.resize(deviceCount);
+        } else {
+            this->Devices.reserve(deviceCount);
+        }
+
+        for (unsigned int i = 0; i < deviceCount; i++) {
+            this->Devices.push_back({
+                QString::fromStdString(this->_midi->getPortName(i)),
+                i
+            });
+        }
     }
 }
 
