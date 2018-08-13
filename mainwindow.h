@@ -29,8 +29,8 @@ public:
 private slots:
     void on_DeviceSelectionRescanButton_clicked();
     void on_HeaderButton_clicked();
-
     void on_DeviceSelectionList_itemClicked(QListWidgetItem *item);
+    void on_DeviceSelectionSaveButton_clicked();
 
 private:
     Ui::MainWindow *ui;

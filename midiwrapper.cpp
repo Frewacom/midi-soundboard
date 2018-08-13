@@ -39,17 +39,20 @@ void MidiWrapper::ScanForMidiDevices() {
 }
 
 bool MidiWrapper::Connect(MidiDevice *device) {
-    try {
-        this->_midi->openPort(device->Port);
-    } catch (RtMidiError &error) {
-        Logger::DisplayError(
-            QString::fromStdString(error.getMessage())
-        );
+    if (this->_connectedDevice != device) {
+        try {
+            this->_midi->openPort(device->Port);
+            this->_connectedDevice = device;
+        } catch (RtMidiError &error) {
+            Logger::DisplayError(
+                QString::fromStdString(error.getMessage())
+            );
 
-        return false;
+            return false;
+        }
+
+        return true;
     }
-
-    return true;
 }
 
 MidiWrapper::~MidiWrapper() {

@@ -76,6 +76,19 @@
         <number>0</number>
        </property>
        <item>
+        <widget class="QPushButton" name="HeaderStatusButton">
+         <property name="accessibleName">
+          <string>btn-header</string>
+         </property>
+         <property name="text">
+          <string>Status</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="HeaderDevicesButton">
          <property name="accessibleName">
           <string>btn-header</string>
@@ -142,6 +155,257 @@
     </item>
     <item>
      <widget class="QStackedWidget" name="ScreenWidget">
+      <widget class="QWidget" name="StatusScreen">
+       <layout class="QVBoxLayout" name="verticalLayout_5" stretch="2,0">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QFrame" name="frame">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frame_2">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_7" stretch="2,1">
+           <property name="spacing">
+            <number>15</number>
+           </property>
+           <property name="leftMargin">
+            <number>20</number>
+           </property>
+           <property name="topMargin">
+            <number>20</number>
+           </property>
+           <property name="rightMargin">
+            <number>20</number>
+           </property>
+           <property name="bottomMargin">
+            <number>20</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="StatusControlsTopLayout">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_9">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="StatusControlsSongTitle">
+                 <property name="text">
+                  <string>Currently playing:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="StatusControlsSong">
+                 <property name="accessibleName">
+                  <string>controls-current-song</string>
+                 </property>
+                 <property name="text">
+                  <string>Tripoloski.wav</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="StatusControlsPauseStart">
+               <property name="accessibleName">
+                <string>controls-btn</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="resources.qrc">
+                 <normaloff>:/icons/pause.svg</normaloff>:/icons/pause.svg</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="StatusControlsReset">
+               <property name="accessibleName">
+                <string>controls-btn</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="resources.qrc">
+                 <normaloff>:/icons/stop.svg</normaloff>:/icons/stop.svg</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="StatusControlsVolumeFrame">
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_8">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="leftMargin">
+                 <number>15</number>
+                </property>
+                <property name="topMargin">
+                 <number>3</number>
+                </property>
+                <property name="rightMargin">
+                 <number>15</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>3</number>
+                </property>
+                <item>
+                 <widget class="QSlider" name="StatusControlsVolumeSelf">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>110</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="accessibleName">
+                   <string>controls-slider</string>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSlider" name="StatusControlsVolumeOut">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>110</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="accessibleName">
+                   <string>controls-slider</string>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="StatusControlsBottomLayout">
+             <item>
+              <widget class="QLabel" name="StatusControlsTimeCurrent">
+               <property name="accessibleName">
+                <string>controls-time-label</string>
+               </property>
+               <property name="text">
+                <string>00:00</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QProgressBar" name="StatusControlsTimebar">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>5</height>
+                </size>
+               </property>
+               <property name="accessibleName">
+                <string>controls-timebar</string>
+               </property>
+               <property name="value">
+                <number>24</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+               </property>
+               <property name="textVisible">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="StatusControlsTimeLength">
+               <property name="accessibleName">
+                <string>controls-time-label</string>
+               </property>
+               <property name="text">
+                <string>00:00</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="DeviceSelectionScreen">
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="spacing">
@@ -255,7 +519,7 @@
            <string>btn-save</string>
           </property>
           <property name="text">
-           <string>Select</string>
+           <string>Select chosen device</string>
           </property>
          </widget>
         </item>

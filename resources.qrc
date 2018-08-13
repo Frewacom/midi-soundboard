@@ -7,5 +7,7 @@
         <file>icons/settings.svg</file>
         <file>icons/refresh.svg</file>
         <file>icons/check.svg</file>
+        <file>icons/pause.svg</file>
+        <file>icons/stop.svg</file>
     </qresource>
 </RCC>

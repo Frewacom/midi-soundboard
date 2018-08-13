@@ -71,11 +71,11 @@ QPushButton[accessibleName="btn-transparent"]
 
 QPushButton[accessibleName="btn-save"]
 {
-    background-color: white; 
+    background-color: #121212;
     border-radius: 0px;
-    padding: 8px 0px;
-    color: #333;
-    font-size: 14px;
+    padding: 10px 0px;
+    color: white;
+    font-size: 13px;
 	qproperty-icon: url(":/icons/check.svg");
 	qproperty-iconSize: 14px 14px;
 }
@@ -89,7 +89,18 @@ QPushButton[accessibleName="btn-save"]:disabled
 
 QPushButton[accessibleName="btn-save"]:hover
 {
-    background-color: #E4E4E4;
+    background-color: #080808;
+    color: white;
+}
+
+QPushButton[accessibleName="controls-btn"]
+{
+    height: 50px;
+    width: 50px;
+    background-color: #383838;
+    border-radius: 25px;
+    padding: 0px;
+    qproperty-iconSize: 25px 25px;
 }
 
 *[accessibleName="main-content"]
@@ -106,6 +117,7 @@ QListWidget
 
 QListWidget:item
 {
+    border: 1px solid transparent;
     border-bottom: 1px solid #2A2A2A;
     padding: 10px 5px;
     color: white;
@@ -116,10 +128,78 @@ QListWidget:item:selected
 {
     background-color: #2A2A2A;
     border-color: #2A2A2A;
+    border: 1px solid #236DDC;
+}
+
+QFrame#StatusControlsVolumeFrame
+{
+    background-color: #383838;
+    border-radius: 10px;
 }
 
 QLabel#DeviceSelectionTitle
 {
     color: white;
     font-weight: bold;
+}
+
+QLabel#StatusControlsSongTitle
+{
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 0px;
+    padding: 0px;
+}
+
+QLabel#StatusControlsSong
+{
+    color: #8C8C8C;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+}
+
+QLabel[accessibleName="controls-time-label"]
+{
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+QSlider[accessibleName="controls-slider"]:sub-page
+{
+    height: 5px;
+    background: #236DDC;
+    border-radius: 2px;
+}
+
+QSlider[accessibleName="controls-slider"]:groove
+{
+    height: 5px;
+    background: #1A1A1A;
+    border-radius: 2px;
+}
+
+QSlider[accessibleName="controls-slider"]:handle
+{
+    background: white;
+    width: 6px;
+    bottom: -4px;
+    top: -4px;
+    border-radius: 3px;
+}
+
+QProgressBar#StatusControlsTimebar
+{
+    height: 5px;
+    border-radius: 2px;
+    margin: 0px 3px;
+    background-color: #383838;
+}
+
+QProgressBar#StatusControlsTimebar:chunk
+{
+    background-color: #236DDC;
 }

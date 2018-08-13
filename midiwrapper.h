@@ -27,6 +27,7 @@ private:
 
     // Variables
     RtMidiIn *_midi;
+    MidiDevice *_connectedDevice;
 };
 
 #endif // MIDIWRAPPER_H
