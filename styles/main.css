@@ -119,9 +119,15 @@ QListWidget:item
 {
     border: 1px solid transparent;
     border-bottom: 1px solid #2A2A2A;
-    padding: 10px 5px;
+    padding: 8px 6px;
     color: white;
     border-radius: 2px;
+    margin-right: 5px;
+}
+
+QListWidget#DeviceSelectionAudioList:item
+{
+    margin-bottom: 2px;
 }
 
 QListWidget:item:selected
@@ -137,10 +143,11 @@ QFrame#StatusControlsVolumeFrame
     border-radius: 10px;
 }
 
-QLabel#DeviceSelectionTitle
+QLabel[accessibleName="sub-header-title"]
 {
     color: white;
     font-weight: bold;
+    font-size: 12px;
 }
 
 QLabel#StatusControlsSongTitle
@@ -202,4 +209,28 @@ QProgressBar#StatusControlsTimebar
 QProgressBar#StatusControlsTimebar:chunk
 {
     background-color: #236DDC;
+}
+
+QScrollBar:vertical
+{
+    width: 6px;
+    background: #383838;
+    border: none;
+}
+
+QScrollBar:handle:vertical
+{
+    background: #236DDC;
+}
+
+QScrollBar:add-page:vertical,
+QScrollBar:sub-page:vertical
+{
+    background: #383838;
+}
+
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical 
+{
+    background: none;
 }

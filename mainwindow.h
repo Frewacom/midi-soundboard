@@ -32,6 +32,8 @@ private slots:
     void on_DeviceSelectionList_itemClicked(QListWidgetItem *item);
     void on_DeviceSelectionSaveButton_clicked();
 
+    void on_DeviceSelectionAudioList_itemClicked(QListWidgetItem *item);
+
 private:
     Ui::MainWindow *ui;
 
@@ -39,6 +41,7 @@ private:
     QMap<QPushButton*, int> _buttonIdentifiers;
 
     void _addDevicesToSelectionList();
+    void _enableDeviceSaveButton();
 };
 
 #endif // MAINWINDOW_H

@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Set the active screen when starting the application
     this->_activeHeaderButton = ui->HeaderStatusButton;
     this->_activeHeaderButton->setChecked(true);
-    ui->DeviceSelectionSaveButton->hide();
+    ui->DeviceSelectionSaveButton->setEnabled(false);
 
     // Associate a header-button with an index to a screen
     this->_buttonIdentifiers.insert(ui->HeaderStatusButton, 0);
@@ -66,7 +66,7 @@ void MainWindow::on_HeaderButton_clicked() {
 void MainWindow::on_DeviceSelectionRescanButton_clicked() {
     this->MIDI->ScanForMidiDevices();
     this->_addDevicesToSelectionList();
-    ui->DeviceSelectionSaveButton->hide();
+    ui->DeviceSelectionSaveButton->setEnabled(false);
 }
 
 // Adds devices to the QListWidget
@@ -76,14 +76,30 @@ void MainWindow::_addDevicesToSelectionList() {
     for (int i = 0; i < this->MIDI->Devices.size(); i++) {
         ui->DeviceSelectionList->addItem(this->MIDI->Devices[i].Name);
     }
+
+    ui->DeviceSelectionAudioList->addItem("test");
+    ui->DeviceSelectionAudioList->addItem("trest");
+    ui->DeviceSelectionAudioList->addItem("trest");
+    ui->DeviceSelectionAudioList->addItem("trest");
+    ui->DeviceSelectionAudioList->addItem("trest");
+    ui->DeviceSelectionAudioList->addItem("trest");
+}
+
+void MainWindow::_enableDeviceSaveButton() {
+    if (!ui->DeviceSelectionSaveButton->isEnabled()) {
+        if (ui->DeviceSelectionAudioList->selectionModel()->
+                selectedIndexes().size() > 0 &&
+            ui->DeviceSelectionList->selectionModel()->
+                selectedIndexes().size() > 0) {
+            ui->DeviceSelectionSaveButton->setEnabled(true);
+        }
+    }
 }
 
 // When entering the device-selection screen the "Select" button is
 // disabled and we want to enable it once we press an item
 void MainWindow::on_DeviceSelectionList_itemClicked(QListWidgetItem *item) {
-    if (ui->DeviceSelectionSaveButton->isHidden()) {
-        ui->DeviceSelectionSaveButton->show();
-    }
+    this->_enableDeviceSaveButton();
 }
 
 // Callback for when the device-selection-save button is pressed
@@ -93,6 +109,19 @@ void MainWindow::on_DeviceSelectionSaveButton_clicked() {
 
     if (this->MIDI->Connect(&device)) {
 
+    }
+}
+
+void MainWindow::on_DeviceSelectionAudioList_itemClicked(QListWidgetItem *item)
+{
+    if (ui->DeviceSelectionAudioList->selectionModel()->
+        selectedIndexes().size() > 2)
+    {
+        QList<QModelIndex> selections = ui->DeviceSelectionAudioList->
+            selectionModel()->selectedIndexes();
+
+        ui->DeviceSelectionAudioList->selectionModel()->
+            select(selections.first(),QItemSelectionModel::Deselect);
     }
 }
 
