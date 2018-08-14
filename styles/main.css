@@ -61,6 +61,11 @@ QPushButton[accessibleName="btn-header"]:checked
     color: white;
 }
 
+QPushButton#HeaderNewProfileButton
+{
+    margin-left: 6px;
+}
+
 QPushButton[accessibleName="btn-transparent"]
 {
     background-color: transparent;
@@ -274,4 +279,60 @@ QScrollBar::up-arrow:vertical,
 QScrollBar::down-arrow:vertical 
 {
     background: none;
+}
+
+QComboBox
+{
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    padding-right: 5px;
+    text-align: right;
+    padding: 2px 6px;
+}
+
+QComboBox:on
+{
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border: 1px solid #1C1C1C;
+}
+
+QComboBox:drop-down
+{
+    border: 0px;
+}
+
+QComboBox:editable
+{
+    background-color: transparent;
+    color: white;
+    border: none;
+}
+
+QComboBox::down-arrow 
+{
+    top: 1px;
+    right: 4px;
+    width: 20px;
+    height: 20px;
+    image: url(":/icons/dropdown-arrow.svg");
+}
+
+QComboBox QAbstractItemView 
+{
+    color: white;
+    background-color: #121212;
+    selection-background-color: #236DDC;
+    outline: none;
+    padding: 3px;
+    border: 1px solid #1C1C1C;
+}
+
+QComboBox QAbstractItemView::item
+{
+    margin-top: 2px;
 }

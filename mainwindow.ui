@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>550</width>
-    <height>350</height>
+    <height>375</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>550</width>
-    <height>350</height>
+    <height>375</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -151,6 +151,16 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="QComboBox" name="HeaderProfileDropdown">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="sizeAdjustPolicy">
+          <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QPushButton" name="HeaderNewProfileButton">
@@ -665,7 +675,7 @@
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>128</height>
+            <height>90</height>
            </size>
           </property>
           <property name="accessibleName">

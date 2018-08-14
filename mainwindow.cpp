@@ -31,6 +31,13 @@ MainWindow::MainWindow(QWidget *parent) :
     this->_buttonIdentifiers.insert(ui->HeaderBindingsButton, 2);
     this->_buttonIdentifiers.insert(ui->HeaderSettingsButton, 3);
 
+    ui->HeaderProfileDropdown->addItem("Default");
+    ui->HeaderProfileDropdown->addItem("Gaming");
+    ui->HeaderProfileDropdown->view()->window()->setWindowFlags(
+        Qt::Popup | Qt::FramelessWindowHint |
+        Qt::NoDropShadowWindowHint
+    );
+
     // We want to use the same function for all header-buttons,
     // hence why we connect them manually
     connect(
