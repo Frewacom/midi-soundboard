@@ -6,8 +6,11 @@
         <file>icons/bindings.svg</file>
         <file>icons/settings.svg</file>
         <file>icons/refresh.svg</file>
-        <file>icons/check.svg</file>
         <file>icons/pause.svg</file>
         <file>icons/stop.svg</file>
+        <file>icons/check.svg</file>
+        <file>icons/audio-out.svg</file>
+        <file>icons/audio-self.svg</file>
+        <file>icons/play.svg</file>
     </qresource>
 </RCC>

@@ -60,6 +60,14 @@ void MainWindow::on_HeaderButton_clicked() {
     QPushButton *button = qobject_cast<QPushButton*>(sender());
     this->_activeHeaderButton = button;
     ui->ScreenWidget->setCurrentIndex(this->_buttonIdentifiers[button]);
+
+    // We don't need to have the button enabled if they have saved their
+    // prefrences, since it will enable again if something changes,
+    // and if it doesn't, we don't need to save anything.
+    if (this->_deviceSaveButtonPressed) {
+        ui->DeviceSelectionSaveButton->setEnabled(false);
+        this->_deviceSaveButtonPressed = false;
+    }
 }
 
 // Callback for when the user wants to scan for MIDI-devices
@@ -102,16 +110,6 @@ void MainWindow::on_DeviceSelectionList_itemClicked(QListWidgetItem *item) {
     this->_enableDeviceSaveButton();
 }
 
-// Callback for when the device-selection-save button is pressed
-void MainWindow::on_DeviceSelectionSaveButton_clicked() {
-    int selectedDeviceIndex = ui->DeviceSelectionList->currentRow();
-    MidiDevice device = this->MIDI->Devices.at(selectedDeviceIndex);
-
-    if (this->MIDI->Connect(&device)) {
-
-    }
-}
-
 void MainWindow::on_DeviceSelectionAudioList_itemClicked(QListWidgetItem *item)
 {
     if (ui->DeviceSelectionAudioList->selectionModel()->
@@ -122,6 +120,19 @@ void MainWindow::on_DeviceSelectionAudioList_itemClicked(QListWidgetItem *item)
 
         ui->DeviceSelectionAudioList->selectionModel()->
             select(selections.first(),QItemSelectionModel::Deselect);
+    }
+
+    this->_enableDeviceSaveButton();
+}
+
+// Callback for when the device-selection-save button is pressed
+void MainWindow::on_DeviceSelectionSaveButton_clicked() {
+    int selectedDeviceIndex = ui->DeviceSelectionList->currentRow();
+    MidiDevice device = this->MIDI->Devices.at(selectedDeviceIndex);
+    this->_deviceSaveButtonPressed = true;
+
+    if (this->MIDI->Connect(&device)) {
+
     }
 }
 

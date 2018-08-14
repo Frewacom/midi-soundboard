@@ -40,6 +40,8 @@ private:
     QPushButton *_activeHeaderButton = nullptr;
     QMap<QPushButton*, int> _buttonIdentifiers;
 
+    bool _deviceSaveButtonPressed = false;
+
     void _addDevicesToSelectionList();
     void _enableDeviceSaveButton();
 };

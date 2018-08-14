@@ -29,11 +29,11 @@ QPushButton:hover
 QFrame#Header
 {
     background-color: #121212;
-    border-bottom: 1px solid #161616;
 }
 
 QFrame[accessibleName="sub-header"]
 {
+    border-top: 1px solid #161616;
     background-color: #121212;
     padding: 8px 10px;
 }
@@ -71,13 +71,13 @@ QPushButton[accessibleName="btn-transparent"]
 
 QPushButton[accessibleName="btn-save"]
 {
-    background-color: #121212;
+    background-color: #236DDC;
     border-radius: 0px;
     padding: 10px 0px;
     color: white;
     font-size: 13px;
 	qproperty-icon: url(":/icons/check.svg");
-	qproperty-iconSize: 14px 14px;
+	qproperty-iconSize: 12px 12px;
 }
 
 QPushButton[accessibleName="btn-save"]:disabled
@@ -89,7 +89,7 @@ QPushButton[accessibleName="btn-save"]:disabled
 
 QPushButton[accessibleName="btn-save"]:hover
 {
-    background-color: #080808;
+    background-color: #121212;
     color: white;
 }
 
@@ -101,6 +101,11 @@ QPushButton[accessibleName="controls-btn"]
     border-radius: 25px;
     padding: 0px;
     qproperty-iconSize: 25px 25px;
+}
+
+QAbstractButton[accessibleName="controls-btn"]:hover
+{
+    background-color: #474646;
 }
 
 *[accessibleName="main-content"]
@@ -137,10 +142,22 @@ QListWidget:item:selected
     border: 1px solid #236DDC;
 }
 
+QFrame#StatusControlsFrame
+{
+    background-color: #121212;
+}
+
 QFrame#StatusControlsVolumeFrame
 {
     background-color: #383838;
     border-radius: 10px;
+}
+
+QLabel
+{
+    color: white;
+    margin: 0px;
+    padding: 0px;
 }
 
 QLabel[accessibleName="sub-header-title"]
@@ -173,6 +190,30 @@ QLabel[accessibleName="controls-time-label"]
     color: white;
     font-weight: bold;
     font-size: 12px;
+}
+
+QLabel[accessibleName="controls-volume-icon"]
+{
+    margin-right: 10px;
+}
+
+QLabel#StatusPressedKeyLabel
+{
+    font-size: 14px;
+    font-weight: bold;
+    color: #236DDC;
+}
+
+QLabel#StatusPressedKey
+{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+QLabel#StatusPressedChord
+{
+    font-size: 60px;
+    font-weight: bold;
 }
 
 QSlider[accessibleName="controls-slider"]:sub-page
