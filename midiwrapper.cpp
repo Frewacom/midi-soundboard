@@ -1,5 +1,13 @@
 #include "midiwrapper.h"
 
+void Callback(double delta, std::vector<unsigned char> *message, void *userData) {
+  unsigned int nBytes = message->size();
+  for (unsigned int i = 0; i < nBytes; i++)
+    qDebug() << "Byte " << i << " = " << (int)message->at(i) << ", ";
+  if ( nBytes > 0 )
+    qDebug() << "stamp = " << delta;
+}
+
 MidiWrapper::MidiWrapper() {
     try {
         this->_midi = new RtMidiIn();
@@ -39,6 +47,12 @@ void MidiWrapper::ScanForMidiDevices() {
 }
 
 bool MidiWrapper::Connect(MidiDevice *device) {
+    if (this->_connectedDevice != nullptr) {
+        // TODO: Move to a Disconnect function
+        this->_midi->closePort();
+        this->_connectedDevice = nullptr;
+    }
+
     if (this->_connectedDevice != device) {
         try {
             this->_midi->openPort(device->Port);
@@ -51,6 +65,7 @@ bool MidiWrapper::Connect(MidiDevice *device) {
             return false;
         }
 
+        this->_midi->setCallback(&Callback);
         return true;
     }
 }

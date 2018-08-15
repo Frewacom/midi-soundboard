@@ -25,6 +25,11 @@ MainWindow::MainWindow(QWidget *parent) :
     this->_activeHeaderButton->setChecked(true);
     ui->DeviceSelectionSaveButton->setEnabled(false);
 
+    // TODO: Move this to a function so that we can change
+    // the pixmap to on/off easily
+    QPixmap icon(":/icons/down-arrow-on.svg");
+    ui->StatusPressIndicatorDown->setPixmap(icon);
+
     // Associate a header-button with an index to a screen
     this->_buttonIdentifiers.insert(ui->HeaderStatusButton, 0);
     this->_buttonIdentifiers.insert(ui->HeaderDevicesButton, 1);
@@ -139,7 +144,7 @@ void MainWindow::on_DeviceSelectionSaveButton_clicked() {
     this->_deviceSaveButtonPressed = true;
 
     if (this->MIDI->Connect(&device)) {
-
+        qDebug() << "Conected to " << device.Name;
     }
 }
 

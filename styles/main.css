@@ -38,6 +38,23 @@ QFrame[accessibleName="sub-header"]
     padding: 8px 10px;
 }
 
+QFrame#StatusMainFrame
+{
+    border-top: 1px solid #161616;
+    background-color: #121212;
+}
+
+QFrame#StatusControlsFrame
+{
+    background-color: #1B1B1B;
+}
+
+QFrame#StatusControlsVolumeFrame
+{
+    background-color: #383838;
+    border-radius: 10px;
+}
+
 QPushButton[accessibleName="btn-header"]
 {
     color: #737373;
@@ -64,6 +81,7 @@ QPushButton[accessibleName="btn-header"]:checked
 QPushButton#HeaderNewProfileButton
 {
     margin-left: 6px;
+    padding-left: 5px;
 }
 
 QPushButton[accessibleName="btn-transparent"]
@@ -147,17 +165,6 @@ QListWidget:item:selected
     border: 1px solid #236DDC;
 }
 
-QFrame#StatusControlsFrame
-{
-    background-color: #121212;
-}
-
-QFrame#StatusControlsVolumeFrame
-{
-    background-color: #383838;
-    border-radius: 10px;
-}
-
 QLabel
 {
     color: white;
@@ -200,6 +207,15 @@ QLabel[accessibleName="controls-time-label"]
 QLabel[accessibleName="controls-volume-icon"]
 {
     margin-right: 10px;
+}
+
+QLabel[accessibleName="status-press-indicator"]
+{
+    min-height: 50px;
+    min-width: 25px;
+    padding: 0px;
+    margin: 0px;
+    background-color: transparent;
 }
 
 QLabel#StatusPressedKeyLabel

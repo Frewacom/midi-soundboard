@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QMap>
 #include <QDebug>
+#include <QPixmap>
 #include <irrKlang.h>
 #include <QListWidgetItem>
 #include "midiwrapper.h"
