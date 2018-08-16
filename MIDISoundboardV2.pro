@@ -29,17 +29,22 @@ SOURCES += \
     midiwrapper.cpp \
     logger.cpp \
     include/RtMidi.cpp \
-    helpers.cpp
+    helpers.cpp \
+    modalwidget.cpp \
+    volumeselectorwidget.cpp
 
 HEADERS += \
         mainwindow.h \
     midiwrapper.h \
     logger.h \
     include/RtMidi.h \
-    helpers.h
+    helpers.h \
+    modalwidget.h \
+    volumeselectorwidget.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    volumeselectorwidget.ui
 
 LIBS += -lwinmm
 

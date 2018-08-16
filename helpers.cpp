@@ -10,3 +10,10 @@ void Helpers::ApplyBoxShadow(QWidget *widget)
 
     widget->setGraphicsEffect(effect);
 }
+
+void Helpers::SetStyleSheet(QWidget *widget, QString url) {
+    QFile file(url);
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+    widget->setStyleSheet(styleSheet);
+}

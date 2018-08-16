@@ -55,6 +55,11 @@ QFrame#StatusControlsVolumeFrame
     border-radius: 10px;
 }
 
+QFrame[accessibleName="modal-root"]
+{
+    background-color: rgba(0,0,0,0.8);
+}
+
 QPushButton[accessibleName="btn-header"]
 {
     color: #737373;
@@ -351,4 +356,33 @@ QComboBox QAbstractItemView
 QComboBox QAbstractItemView::item
 {
     margin-top: 2px;
+}
+
+QFrame#VolumeSelectorFrame
+{
+    margin-bottom: 50px;
+    background-color: #292929;
+    border-radius: 15px;
+    padding-bottom: 25px;
+}
+
+QFrame#VolumeSelectorFrame > QListWidget
+{
+    background-color: #1B1B1B;
+}
+
+QFrame#VolumeSelectorHeader
+{
+    padding: 0px 6px;
+}
+
+QFrame#VolumeSelectorHeader > QPushButton
+{
+    background-color: transparent;
+    padding: 0px;
+}
+
+QLabel#VolumeSelectorTitle
+{
+    font-weight: bold;
 }

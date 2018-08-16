@@ -18,5 +18,6 @@
         <file>icons/up-arrow-off.svg</file>
         <file>icons/up-arrow-on.svg</file>
         <file>icons/dropdown-arrow.svg</file>
+        <file>icons/close.svg</file>
     </qresource>
 </RCC>

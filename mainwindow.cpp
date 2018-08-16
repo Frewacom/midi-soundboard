@@ -11,12 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // TODO: Put this in helpers.cpp instead
-    QFile file(":/styles/main.css");
-    file.open(QFile::ReadOnly);
-    QString styleSheet = QLatin1String(file.readAll());
-    ui->centralWidget->setStyleSheet(styleSheet);
-
     this->MIDI = new MidiWrapper();
     this->_addDevicesToSelectionList();
 
@@ -43,6 +37,20 @@ MainWindow::MainWindow(QWidget *parent) :
         Qt::NoDropShadowWindowHint
     );
 
+    // Create the volume modal and connect it to the resize-event
+    // so that its size can update when we resize the MainWindow
+    ModalWidget *volumeModal = new ModalWidget(
+        new QSize(this->width(), this->height()),
+        ui->centralWidget
+    );
+
+    volumeModal->setContent(new VolumeSelectorWidget(volumeModal));
+
+    connect(
+        this, SIGNAL(Resized(QSize*)),
+        volumeModal, SLOT(onResize(QSize*))
+    );
+
     // We want to use the same function for all header-buttons,
     // hence why we connect them manually
     connect(
@@ -61,8 +69,16 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->HeaderSettingsButton, SIGNAL(clicked()),
         this, SLOT(on_HeaderButton_clicked())
     );
+
+    Helpers::SetStyleSheet(ui->centralWidget, ":/styles/main.css");
 }
 
+void MainWindow::resizeEvent(QResizeEvent* event)
+{
+   QMainWindow::resizeEvent(event);
+
+   emit this->Resized(new QSize(this->width(), this->height()));
+}
 // Callback when a header-button has been clicked (main-nav)
 void MainWindow::on_HeaderButton_clicked() {
     if (this->_activeHeaderButton != nullptr) {
