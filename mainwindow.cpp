@@ -1,10 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-enum UIScreen {
-    DeviceSelection = 0,
-};
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -63,17 +59,6 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->HeaderSettingsButton, SIGNAL(clicked()),
         this, SLOT(on_HeaderButton_clicked())
     );
-
-    // Connect MIDI-signals
-//    connect(
-//        this->MIDI, SIGNAL(keyDown()),
-//        this, SLOT(on_midiKeyDown())
-//    );
-
-//    connect(
-//        this->MIDI, SIGNAL(keyDown()),
-//        this, SLOT(on_midiKeyUp())
-//    );
 
     Helpers::SetStyleSheet(ui->centralWidget, ":/styles/main.css");
 }
@@ -167,15 +152,7 @@ void MainWindow::on_DeviceSelectionSaveButton_clicked() {
 
     if (this->MIDI->Connect(&device)) {
         qDebug() << "Conected to " << device.Name;
-    }
-}
-
-// Allows us to toggle between two svgs (on/off) for the key indicators
-void MainWindow::_setKeyIndicator(QLabel *indicator, bool state) {
-    if (state == true) {
-        indicator->setPixmap(QPixmap(":/icons/down-arrow-on.svg"));
-    } else {
-        indicator->setPixmap(QPixmap(":/icons/down-arrow-off.svg"));
+        ui->ScreenWidget->setCurrentIndex(0);
     }
 }
 
@@ -183,29 +160,14 @@ void MainWindow::on_StatusControlsVolume_clicked() {
     this->_volumeModal->open();
 }
 
-// MIDI-callbacks
-void MainWindow::on_midiKeyDown() {
-    this->_setKeyIndicator(
-        ui->StatusPressIndicatorUp,
-        false
-    );
-
-    this->_setKeyIndicator(
-        ui->StatusPressIndicatorDown,
-        true
-    );
+// MIDI
+void MainWindow::OnMidiKeyDown(unsigned int key) {
+    ui->StatusPressedKey->setText("KEY " + QString::number(key));
+    ui->StatusPressedChord->setText(this->MIDI->GetChordFromKey(key));
 }
 
-void MainWindow::on_midiKeyUp() {
-    this->_setKeyIndicator(
-        ui->StatusPressIndicatorDown,
-        false
-    );
+void MainWindow::OnMidiKeyUp(unsigned int key) {
 
-    this->_setKeyIndicator(
-        ui->StatusPressIndicatorUp,
-        true
-    );
 }
 
 MainWindow::~MainWindow() {

@@ -26,10 +26,24 @@ public:
     void ScanForMidiDevices();
     void GetMidiDevices();
     bool Connect(MidiDevice *device);
+    QString GetChordFromKey(unsigned int key);
+
+    // We need this to public atm so that we can
+    // access the setCallback method from main.cpp.
+    // We should - later on - create a function in MidiWrapper
+    // which does this for us without exposing the RtMidi object
+     RtMidiIn *_midi;
+
+signals:
+    void on_keyDown();
+    void on_keyUp();
 
 private:
-    RtMidiIn *_midi;
     MidiDevice *_connectedDevice;
+    QList<QString> _chords = {
+        "C","C#","D","D#","E","F",
+        "F#","G","G#","A","A#","B"
+    };
 };
 
 #endif // MIDIWRAPPER_H

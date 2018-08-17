@@ -1,19 +1,5 @@
 #include "midiwrapper.h"
 
-void MidiCallback(double delta, std::vector<unsigned char> *message, void *data) {
-    if (message->size() >= 3) {
-        unsigned int status = message->at(0);
-        unsigned int key = message->at(1);
-        unsigned int data = message->at(2);
-
-        if (status == MidiStatus::KeyDown) {
-
-        } else if (status == MidiStatus::KeyUp) {
-
-        }
-    }
-}
-
 MidiWrapper::MidiWrapper() {
     try {
         this->_midi = new RtMidiIn();
@@ -70,9 +56,18 @@ bool MidiWrapper::Connect(MidiDevice *device) {
             return false;
         }
 
-        this->_midi->setCallback(&MidiCallback);
         return true;
     }
+}
+
+QString MidiWrapper::GetChordFromKey(unsigned int key) {
+    unsigned int index = key % 24;
+
+    if (index > 11) {
+        index %= 12;
+    }
+
+    return this->_chords[index];
 }
 
 MidiWrapper::~MidiWrapper() {

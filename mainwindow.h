@@ -29,6 +29,8 @@ public:
     ~MainWindow();
 
     MidiWrapper *MIDI;
+    void OnMidiKeyDown(unsigned int key);
+    void OnMidiKeyUp(unsigned int key);
 
 signals:
     void Resized(QSize *newSize);
@@ -40,21 +42,18 @@ private slots:
     void on_DeviceSelectionSaveButton_clicked();
     void on_DeviceSelectionAudioList_itemClicked(QListWidgetItem *item);
     void on_StatusControlsVolume_clicked();
-    void on_midiKeyDown();
-    void on_midiKeyUp();
 
 private:
     Ui::MainWindow *ui;
 
     QPushButton *_activeHeaderButton = nullptr;
     QMap<QPushButton*, int> _buttonIdentifiers;
+    ModalWidget *_volumeModal = nullptr;
 
     bool _deviceSaveButtonPressed = false;
-    ModalWidget *_volumeModal = nullptr;
 
     void _addDevicesToSelectionList();
     void _enableDeviceSaveButton();
-    void _setKeyIndicator(QLabel *indicator, bool state);
 
 protected:
     void resizeEvent(QResizeEvent* event);
