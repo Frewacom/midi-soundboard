@@ -164,6 +164,10 @@ void MainWindow::on_DeviceSelectionSaveButton_clicked() {
     }
 }
 
+void MainWindow::on_StatusControlsVolume_clicked() {
+
+}
+
 MainWindow::~MainWindow() {
     delete ui;
 }

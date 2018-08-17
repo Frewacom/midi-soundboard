@@ -31,7 +31,8 @@ SOURCES += \
     include/RtMidi.cpp \
     helpers.cpp \
     modalwidget.cpp \
-    volumeselectorwidget.cpp
+    volumeselectorwidget.cpp \
+    modalcontentwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,7 +41,8 @@ HEADERS += \
     include/RtMidi.h \
     helpers.h \
     modalwidget.h \
-    volumeselectorwidget.h
+    volumeselectorwidget.h \
+    modalcontentwidget.h
 
 FORMS += \
         mainwindow.ui \
