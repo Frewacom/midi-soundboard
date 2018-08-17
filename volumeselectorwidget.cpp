@@ -7,8 +7,20 @@ VolumeSelectorWidget::VolumeSelectorWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->VolumeSelectorList->addItem("test");
-    ui->VolumeSelectorList->addItem("test2");
+    ui->AudioDeviceListLayout->insertWidget(
+        0,
+        new VolumeSelectorItem(
+            "Högtalare (Line 6 UX2)",
+            50
+        )
+    );
+    ui->AudioDeviceListLayout->insertWidget(
+        0,
+        new VolumeSelectorItem(
+            "Steam Link Input (Steam streaming)",
+            100
+        )
+    );
 }
 
 void VolumeSelectorWidget::on_VolumeSelectorClose_clicked() {

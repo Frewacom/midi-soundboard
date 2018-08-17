@@ -39,16 +39,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Create the volume modal and connect it to the resize-event
     // so that its size can update when we resize the MainWindow
-    ModalWidget *volumeModal = new ModalWidget(
+   this->_volumeModal = new ModalWidget(
         new QSize(this->width(), this->height()),
         ui->centralWidget
     );
 
-    volumeModal->setContent(new VolumeSelectorWidget(volumeModal));
+    this->_volumeModal->setContent(
+        new VolumeSelectorWidget(this->_volumeModal)
+    );
 
     connect(
         this, SIGNAL(Resized(QSize*)),
-        volumeModal, SLOT(onResize(QSize*))
+        this->_volumeModal, SLOT(onResize(QSize*))
     );
 
     // We want to use the same function for all header-buttons,
@@ -126,7 +128,8 @@ void MainWindow::_enableDeviceSaveButton() {
         if (ui->DeviceSelectionAudioList->selectionModel()->
                 selectedIndexes().size() > 0 &&
             ui->DeviceSelectionList->selectionModel()->
-                selectedIndexes().size() > 0) {
+                selectedIndexes().size() > 0)
+        {
             ui->DeviceSelectionSaveButton->setEnabled(true);
         }
     }
@@ -165,7 +168,7 @@ void MainWindow::on_DeviceSelectionSaveButton_clicked() {
 }
 
 void MainWindow::on_StatusControlsVolume_clicked() {
-
+    this->_volumeModal->open();
 }
 
 MainWindow::~MainWindow() {

@@ -32,7 +32,8 @@ SOURCES += \
     helpers.cpp \
     modalwidget.cpp \
     volumeselectorwidget.cpp \
-    modalcontentwidget.cpp
+    modalcontentwidget.cpp \
+    volumeselectoritem.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,11 +43,13 @@ HEADERS += \
     helpers.h \
     modalwidget.h \
     volumeselectorwidget.h \
-    modalcontentwidget.h
+    modalcontentwidget.h \
+    volumeselectoritem.h
 
 FORMS += \
         mainwindow.ui \
-    volumeselectorwidget.ui
+    volumeselectorwidget.ui \
+    volumeselectoritem.ui
 
 LIBS += -lwinmm
 

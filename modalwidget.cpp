@@ -5,15 +5,20 @@ ModalWidget::ModalWidget(QSize *size, QWidget *parent) : QWidget(parent)
     this->_root = new QFrame(this);
     this->_layout = new QVBoxLayout();
 
-    this->setSize(size);
+    this->resize(0,0);
     this->_root->setAccessibleName("modal-root");
-
     this->_root->setLayout(this->_layout);
-    this->_root->show();
+
+    this->_currentSize = size;
+}
+
+void ModalWidget::open() {
+    this->_isOpen = true;
+    this->setSize(this->_currentSize);
 }
 
 void ModalWidget::setSize(QSize *size) {
-    if (this->_root->size().height() > 0) {
+    if (this->_isOpen) {
         this->resize(size->width(), size->height());
         this->_root->resize(size->width(), size->height());
         this->_root->show();
@@ -27,8 +32,10 @@ void ModalWidget::setContent(ModalContentWidget *widget) {
 
 void ModalWidget::onClose() {
     this->setSize(new QSize(0,0));
+    this->_isOpen = false;
 }
 
 void ModalWidget::onResize(QSize *newSize) {
+    this->_currentSize = newSize;
     this->setSize(newSize);
 }

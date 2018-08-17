@@ -19,5 +19,6 @@
         <file>icons/up-arrow-on.svg</file>
         <file>icons/dropdown-arrow.svg</file>
         <file>icons/close.svg</file>
+        <file>icons/audio-out-blue.svg</file>
     </qresource>
 </RCC>

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "helpers.h"
+#include "volumeselectoritem.h"
 #include "modalcontentwidget.h"
 
 namespace Ui {

@@ -39,6 +39,8 @@ private slots:
     void on_DeviceSelectionSaveButton_clicked();
     void on_DeviceSelectionAudioList_itemClicked(QListWidgetItem *item);
 
+    void on_StatusControlsVolume_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -46,6 +48,7 @@ private:
     QMap<QPushButton*, int> _buttonIdentifiers;
 
     bool _deviceSaveButtonPressed = false;
+    ModalWidget *_volumeModal = nullptr;
 
     void _addDevicesToSelectionList();
     void _enableDeviceSaveButton();

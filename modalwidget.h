@@ -16,7 +16,7 @@ public:
 
     void setSize(QSize *size);
     void setContent(ModalContentWidget *widget);
-    void showModal();
+    void open();
 
 signals:
 
@@ -27,6 +27,9 @@ public slots:
 private:
     QFrame *_root = nullptr;
     QVBoxLayout *_layout = nullptr;
+    QSize *_currentSize = nullptr;
+
+    bool _isOpen = false;
 
 };
 

@@ -242,21 +242,26 @@ QLabel#StatusPressedChord
     font-weight: bold;
 }
 
-QSlider[accessibleName="controls-slider"]:sub-page
+QSlider:sub-page
 {
     height: 5px;
     background: #236DDC;
     border-radius: 2px;
 }
 
-QSlider[accessibleName="controls-slider"]:groove
+QSlider:groove
 {
     height: 5px;
     background: #1A1A1A;
     border-radius: 2px;
 }
 
-QSlider[accessibleName="controls-slider"]:handle
+QSlider[accessibleName="volume-selector-slider"]:groove
+{
+    background: #323232;
+}
+
+QSlider:handle
 {
     background: white;
     width: 6px;
@@ -385,4 +390,22 @@ QFrame#VolumeSelectorHeader > QPushButton
 QLabel#VolumeSelectorTitle
 {
     font-weight: bold;
+}
+
+QScrollArea, QScrollArea > QWidget > QWidget
+{
+    background: #1B1B1B;
+    padding: 0px;
+    margin: 0px;
+}
+
+QLabel#VolumeLabel
+{
+    font-weight: bold;
+}
+
+QFrame#VolumeSelectorItemFrame
+{
+    border-bottom: 1px solid #202020;
+    padding: 0px 0px;
 }
