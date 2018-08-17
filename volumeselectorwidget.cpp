@@ -21,6 +21,8 @@ VolumeSelectorWidget::VolumeSelectorWidget(QWidget *parent) :
             100
         )
     );
+
+    Helpers::ApplyBoxShadow(ui->VolumeSelectorFrame);
 }
 
 void VolumeSelectorWidget::on_VolumeSelectorClose_clicked() {

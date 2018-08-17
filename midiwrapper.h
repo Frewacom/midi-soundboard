@@ -10,6 +10,11 @@ struct MidiDevice {
     unsigned int Port;
 };
 
+enum MidiStatus {
+    KeyDown = 144,
+    KeyUp = 128
+};
+
 class MidiWrapper
 {
 public:
@@ -23,9 +28,6 @@ public:
     bool Connect(MidiDevice *device);
 
 private:
-    // Functions
-
-    // Variables
     RtMidiIn *_midi;
     MidiDevice *_connectedDevice;
 };

@@ -1,6 +1,10 @@
 #include "modalwidget.h"
 
-ModalWidget::ModalWidget(QSize *size, QWidget *parent) : QWidget(parent)
+ModalWidget::ModalWidget(
+        QSize *size,
+        ModalContentWidget *content,
+        QWidget *parent
+) : QWidget(parent)
 {
     this->_root = new QFrame(this);
     this->_layout = new QVBoxLayout();
@@ -10,6 +14,8 @@ ModalWidget::ModalWidget(QSize *size, QWidget *parent) : QWidget(parent)
     this->_root->setLayout(this->_layout);
 
     this->_currentSize = size;
+    this->_layout->addWidget(content, 1, Qt::AlignHCenter | Qt::AlignVCenter);
+    connect(content, SIGNAL(closeModal()), this, SLOT(onClose()));
 }
 
 void ModalWidget::open() {
@@ -23,11 +29,6 @@ void ModalWidget::setSize(QSize *size) {
         this->_root->resize(size->width(), size->height());
         this->_root->show();
     }
-}
-
-void ModalWidget::setContent(ModalContentWidget *widget) {
-    this->_layout->addWidget(widget, 1, Qt::AlignHCenter | Qt::AlignVCenter);
-    connect(widget, SIGNAL(closeModal()), this, SLOT(onClose()));
 }
 
 void ModalWidget::onClose() {

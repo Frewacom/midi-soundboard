@@ -57,7 +57,7 @@ QFrame#StatusControlsVolumeFrame
 
 QFrame[accessibleName="modal-root"]
 {
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(15,15,15,0.6);
 }
 
 QPushButton[accessibleName="btn-header"]
@@ -232,7 +232,8 @@ QLabel#StatusPressedKeyLabel
 
 QLabel#StatusPressedKey
 {
-    font-size: 20px;
+    color: #A0A0A0;
+    font-size: 16px;
     font-weight: bold;
 }
 
@@ -368,7 +369,7 @@ QFrame#VolumeSelectorFrame
     margin-bottom: 50px;
     background-color: #292929;
     border-radius: 15px;
-    padding-bottom: 25px;
+    padding-bottom: 30px;
 }
 
 QFrame#VolumeSelectorFrame > QListWidget

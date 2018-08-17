@@ -6,7 +6,7 @@ void Helpers::ApplyBoxShadow(QWidget *widget)
     effect->setBlurRadius(20);
     effect->setXOffset(1);
     effect->setYOffset(1);
-    effect->setColor(QColor::fromRgb(100,100,100));
+    effect->setColor(QColor::fromRgb(20,20,20));
 
     widget->setGraphicsEffect(effect);
 }

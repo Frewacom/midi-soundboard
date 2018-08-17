@@ -268,6 +268,9 @@
              </item>
              <item>
               <layout class="QVBoxLayout" name="verticalLayout_12">
+               <property name="spacing">
+                <number>0</number>
+               </property>
                <item>
                 <widget class="QLabel" name="StatusPressedChord">
                  <property name="font">
@@ -281,7 +284,7 @@
                   <string>C4</string>
                  </property>
                  <property name="alignment">
-                  <set>Qt::AlignCenter</set>
+                  <set>Qt::AlignBottom|Qt::AlignHCenter</set>
                  </property>
                 </widget>
                </item>

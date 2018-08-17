@@ -19,11 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     this->_activeHeaderButton->setChecked(true);
     ui->DeviceSelectionSaveButton->setEnabled(false);
 
-    // TODO: Move this to a function so that we can change
-    // the pixmap to on/off easily
-    QPixmap icon(":/icons/down-arrow-on.svg");
-    ui->StatusPressIndicatorDown->setPixmap(icon);
-
     // Associate a header-button with an index to a screen
     this->_buttonIdentifiers.insert(ui->HeaderStatusButton, 0);
     this->_buttonIdentifiers.insert(ui->HeaderDevicesButton, 1);
@@ -41,11 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // so that its size can update when we resize the MainWindow
    this->_volumeModal = new ModalWidget(
         new QSize(this->width(), this->height()),
+        new VolumeSelectorWidget(this->_volumeModal),
         ui->centralWidget
-    );
-
-    this->_volumeModal->setContent(
-        new VolumeSelectorWidget(this->_volumeModal)
     );
 
     connect(
@@ -71,6 +63,17 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->HeaderSettingsButton, SIGNAL(clicked()),
         this, SLOT(on_HeaderButton_clicked())
     );
+
+    // Connect MIDI-signals
+//    connect(
+//        this->MIDI, SIGNAL(keyDown()),
+//        this, SLOT(on_midiKeyDown())
+//    );
+
+//    connect(
+//        this->MIDI, SIGNAL(keyDown()),
+//        this, SLOT(on_midiKeyUp())
+//    );
 
     Helpers::SetStyleSheet(ui->centralWidget, ":/styles/main.css");
 }
@@ -167,8 +170,42 @@ void MainWindow::on_DeviceSelectionSaveButton_clicked() {
     }
 }
 
+// Allows us to toggle between two svgs (on/off) for the key indicators
+void MainWindow::_setKeyIndicator(QLabel *indicator, bool state) {
+    if (state == true) {
+        indicator->setPixmap(QPixmap(":/icons/down-arrow-on.svg"));
+    } else {
+        indicator->setPixmap(QPixmap(":/icons/down-arrow-off.svg"));
+    }
+}
+
 void MainWindow::on_StatusControlsVolume_clicked() {
     this->_volumeModal->open();
+}
+
+// MIDI-callbacks
+void MainWindow::on_midiKeyDown() {
+    this->_setKeyIndicator(
+        ui->StatusPressIndicatorUp,
+        false
+    );
+
+    this->_setKeyIndicator(
+        ui->StatusPressIndicatorDown,
+        true
+    );
+}
+
+void MainWindow::on_midiKeyUp() {
+    this->_setKeyIndicator(
+        ui->StatusPressIndicatorDown,
+        false
+    );
+
+    this->_setKeyIndicator(
+        ui->StatusPressIndicatorUp,
+        true
+    );
 }
 
 MainWindow::~MainWindow() {

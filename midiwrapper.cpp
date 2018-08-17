@@ -1,11 +1,17 @@
 #include "midiwrapper.h"
 
-void Callback(double delta, std::vector<unsigned char> *message, void *userData) {
-  unsigned int nBytes = message->size();
-  for (unsigned int i = 0; i < nBytes; i++)
-    qDebug() << "Byte " << i << " = " << (int)message->at(i) << ", ";
-  if ( nBytes > 0 )
-    qDebug() << "stamp = " << delta;
+void MidiCallback(double delta, std::vector<unsigned char> *message, void *data) {
+    if (message->size() >= 3) {
+        unsigned int status = message->at(0);
+        unsigned int key = message->at(1);
+        unsigned int data = message->at(2);
+
+        if (status == MidiStatus::KeyDown) {
+
+        } else if (status == MidiStatus::KeyUp) {
+
+        }
+    }
 }
 
 MidiWrapper::MidiWrapper() {
@@ -20,7 +26,6 @@ MidiWrapper::MidiWrapper() {
     this->ScanForMidiDevices();
 }
 
-// Public functions
 void MidiWrapper::ScanForMidiDevices() {
     unsigned int deviceCount = this->_midi->getPortCount();
 
@@ -39,8 +44,8 @@ void MidiWrapper::ScanForMidiDevices() {
 
         for (unsigned int i = 0; i < deviceCount; i++) {
             this->Devices.push_back({
-                    QString::fromStdString(this->_midi->getPortName(i)),
-                    i
+                QString::fromStdString(this->_midi->getPortName(i)),
+                i
             });
         }
     }
@@ -65,7 +70,7 @@ bool MidiWrapper::Connect(MidiDevice *device) {
             return false;
         }
 
-        this->_midi->setCallback(&Callback);
+        this->_midi->setCallback(&MidiCallback);
         return true;
     }
 }

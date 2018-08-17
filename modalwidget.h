@@ -12,10 +12,13 @@ class ModalWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ModalWidget(QSize *size, QWidget *parent = nullptr);
+    explicit ModalWidget(
+        QSize *size,
+        ModalContentWidget *content,
+        QWidget *parent = nullptr
+    );
 
     void setSize(QSize *size);
-    void setContent(ModalContentWidget *widget);
     void open();
 
 signals:
