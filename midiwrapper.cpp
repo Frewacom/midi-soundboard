@@ -39,9 +39,7 @@ void MidiWrapper::ScanForMidiDevices() {
 
 bool MidiWrapper::Connect(MidiDevice *device) {
     if (this->_connectedDevice != nullptr) {
-        // TODO: Move to a Disconnect function
-        this->_midi->closePort();
-        this->_connectedDevice = nullptr;
+        this->Disconnect();
     }
 
     if (this->_connectedDevice != device) {
@@ -63,6 +61,9 @@ bool MidiWrapper::Connect(MidiDevice *device) {
 QString MidiWrapper::GetChordFromKey(unsigned int key) {
     unsigned int index = key % 24;
 
+    // Some keys gives an remainder of 12-23.
+    // Using modulus 12 on 12-23 will give us a number
+    // between 0-11, which are valid indexes.
     if (index > 11) {
         index %= 12;
     }
@@ -70,7 +71,17 @@ QString MidiWrapper::GetChordFromKey(unsigned int key) {
     return this->_chords[index];
 }
 
+void MidiWrapper::Disconnect() {
+    this->_midi->closePort();
+    this->_connectedDevice = nullptr;
+}
+
 MidiWrapper::~MidiWrapper() {
     this->Devices.clear();
+    this->_chords.clear();
+
+    this->Disconnect();
+
     delete this->_midi;
+    delete this->_connectedDevice;
 }

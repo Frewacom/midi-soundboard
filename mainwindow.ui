@@ -372,7 +372,7 @@
                   <string>controls-current-song</string>
                  </property>
                  <property name="text">
-                  <string>Tripoloski.wav</string>
+                  <string>Nothing</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -469,7 +469,7 @@
                 <string>controls-timebar</string>
                </property>
                <property name="value">
-                <number>24</number>
+                <number>0</number>
                </property>
                <property name="alignment">
                 <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>

@@ -24,8 +24,8 @@ public:
     std::vector<MidiDevice> Devices;
 
     void ScanForMidiDevices();
-    void GetMidiDevices();
     bool Connect(MidiDevice *device);
+    void Disconnect();
     QString GetChordFromKey(unsigned int key);
 
     // We need this to public atm so that we can

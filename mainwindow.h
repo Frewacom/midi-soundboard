@@ -2,19 +2,17 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QDir>
 #include <QMap>
 #include <QDebug>
 #include <QPixmap>
 #include <QLabel>
-#include <irrKlang.h>
+#include <QDateTime>
 #include <QListWidgetItem>
 #include "modalwidget.h"
 #include "volumeselectorwidget.h"
 #include "midiwrapper.h"
+#include "audiowrapper.h"
 #include "helpers.h"
-
-using namespace irrklang;
 
 namespace Ui {
 class MainWindow;
@@ -29,6 +27,7 @@ public:
     ~MainWindow();
 
     MidiWrapper *MIDI;
+    AudioWrapper *Audio;
     void OnMidiKeyDown(unsigned int key);
     void OnMidiKeyUp(unsigned int key);
 
@@ -42,6 +41,9 @@ private slots:
     void on_DeviceSelectionSaveButton_clicked();
     void on_DeviceSelectionAudioList_itemClicked(QListWidgetItem *item);
     void on_StatusControlsVolume_clicked();
+    void on_TrackFinished();
+    void on_TrackStarted(TrackInfo *track);
+    void on_StatusControlsPausePlay_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;

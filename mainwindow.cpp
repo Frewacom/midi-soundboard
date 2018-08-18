@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->MIDI = new MidiWrapper();
+    this->Audio = new AudioWrapper();
     this->_addDevicesToSelectionList();
 
     // Set the active screen when starting the application
@@ -60,6 +61,17 @@ MainWindow::MainWindow(QWidget *parent) :
         this, SLOT(on_HeaderButton_clicked())
     );
 
+    // Audio signals
+    connect(
+        this->Audio, SIGNAL(TrackStarted(TrackInfo*)),
+        this, SLOT(on_TrackStarted(TrackInfo*))
+    );
+
+    connect(
+        this->Audio, SIGNAL(TrackFinished()),
+        this, SLOT(on_TrackFinished())
+    );
+
     Helpers::SetStyleSheet(ui->centralWidget, ":/styles/main.css");
 }
 
@@ -103,12 +115,9 @@ void MainWindow::_addDevicesToSelectionList() {
         ui->DeviceSelectionList->addItem(this->MIDI->Devices[i].Name);
     }
 
-    ui->DeviceSelectionAudioList->addItem("test");
-    ui->DeviceSelectionAudioList->addItem("trest");
-    ui->DeviceSelectionAudioList->addItem("trest");
-    ui->DeviceSelectionAudioList->addItem("trest");
-    ui->DeviceSelectionAudioList->addItem("trest");
-    ui->DeviceSelectionAudioList->addItem("trest");
+    for (int j = 0; j < this->Audio->Devices.size(); j++) {
+        ui->DeviceSelectionAudioList->addItem(this->Audio->Devices[j].Name);
+    }
 }
 
 void MainWindow::_enableDeviceSaveButton() {
@@ -154,20 +163,76 @@ void MainWindow::on_DeviceSelectionSaveButton_clicked() {
         qDebug() << "Conected to " << device.Name;
         ui->ScreenWidget->setCurrentIndex(0);
     }
+
+    QModelIndexList indexes = ui->DeviceSelectionAudioList->selectionModel()->selectedIndexes();
+    for (int i = 0; i < indexes.size(); i++) {
+        int index = indexes.at(i).row();
+
+        if (!this->Audio->Connect(&this->Audio->Devices.at(index))) {
+            Logger::DisplayError(
+                "Could not connect to AudioDevice: " + this->Audio->Devices.at(index).Name
+            );
+        }
+    }
 }
 
+
+// Status screen
 void MainWindow::on_StatusControlsVolume_clicked() {
     this->_volumeModal->open();
 }
 
-// MIDI
+void MainWindow::on_StatusControlsPausePlay_clicked(bool checked) {
+    if (this->Audio->CurrentTrack != nullptr) {
+        if (!this->Audio->CurrentTrack->isFinished()) {
+            if (checked) {
+                this->Audio->Pause();
+            } else {
+                this->Audio->Play();
+            }
+        }
+    } else {
+        ui->StatusControlsPausePlay->setChecked(false);
+    }
+}
+
+// MIDI callbacks
 void MainWindow::OnMidiKeyDown(unsigned int key) {
     ui->StatusPressedKey->setText("KEY " + QString::number(key));
     ui->StatusPressedChord->setText(this->MIDI->GetChordFromKey(key));
+
+    if (key == 24) {
+        this->Audio->StartPlayback();
+    }
 }
 
 void MainWindow::OnMidiKeyUp(unsigned int key) {
 
+}
+
+// Audio callbacks
+void MainWindow::on_TrackStarted(TrackInfo *track) {
+    ui->StatusControlsSong->setText(track->Name);
+    ui->StatusControlsPausePlay->setChecked(true);
+    ui->StatusControlsTimeLength->setText(
+        QDateTime::fromMSecsSinceEpoch(track->Length).toUTC().toString("mm:ss")
+    );
+    ui->StatusControlsTimeCurrent->setText("00:00");
+    ui->StatusControlsTimebar->setValue(0);
+}
+
+void MainWindow::on_TrackFinished() {
+    // TODO: We need to check if this signal was sent
+    // because of a playback of a new track or simply because
+    // the user wanted to stop it.
+    // If it's because of a new track - check if the new track is the
+    // same as the previous track to avoid updating the UI for no reason
+    ui->StatusControlsSong->setText("Nothing");
+    ui->StatusControlsPausePlay->setChecked(false);
+    ui->StatusControlsTimeLength->setText("00:00");
+    ui->StatusControlsTimeCurrent->setText("00:00");
+    ui->StatusControlsTimebar->setValue(0);
+    qDebug() << "I run";
 }
 
 MainWindow::~MainWindow() {

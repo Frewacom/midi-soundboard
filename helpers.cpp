@@ -17,3 +17,7 @@ void Helpers::SetStyleSheet(QWidget *widget, QString url) {
     QString styleSheet = QLatin1String(file.readAll());
     widget->setStyleSheet(styleSheet);
 }
+
+QDir Helpers::GetApplicationPath() {
+    return QCoreApplication::applicationDirPath();
+}
