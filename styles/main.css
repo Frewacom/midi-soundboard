@@ -282,6 +282,7 @@ QProgressBar#StatusControlsTimebar
 QProgressBar#StatusControlsTimebar:chunk
 {
     background-color: #236DDC;
+    border-radius: 2px;
 }
 
 QScrollBar:vertical

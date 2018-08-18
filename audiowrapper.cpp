@@ -51,10 +51,20 @@ bool AudioWrapper::Connect(AudioDevice *device) {
 void AudioWrapper::StartPlayback() {
     QDir path = Helpers::GetApplicationPath();
 
+    if (this->_stopReason != PlaybackStopReason::None) {
+        if (this->CurrentTrack != nullptr) {
+            this->_stopReason = PlaybackStopReason::Overridden;
+        } else {
+            this->_stopReason = PlaybackStopReason::Default;
+        }
+    }
+
+    this->StopPlayback(this->_stopReason);
+
     for (int i = 0; i < this->Engines.size(); i++) {
         // TODO: Make sure we only assign CurrentTrack once
         this->CurrentTrack = this->Engines.at(i).Engine->play2D(
-            path.filePath("music/my-best.mp3").toStdString().c_str(),
+            path.filePath("music/boosted-animal.wav").toStdString().c_str(),
             false,
             false,
             true
@@ -65,9 +75,17 @@ void AudioWrapper::StartPlayback() {
 
     // Track name should be extracted from the path
     TrackInfo *track = new TrackInfo();
-    track->Name ="my-best.mp3";
+    track->Name ="boosted-animal.wav";
     track->Length = this->CurrentTrack->getPlayLength();
     emit this->TrackStarted(track);
+}
+
+void AudioWrapper::StopPlayback(int reason) {
+    this->_stopReason = reason;
+
+    for (int i = 0; i < this->Engines.size(); i++) {
+        this->Engines.at(i).Engine->stopAllSounds();
+    }
 }
 
 void AudioWrapper::Pause() {
@@ -84,8 +102,9 @@ void AudioWrapper::Play() {
 
 void AudioWrapper::TrackFinishedCallback() {
     this->CurrentTrack = nullptr;
+    this->_stopReason = PlaybackStopReason::None;
 
-    emit this->TrackFinished();
+    emit this->TrackFinished(this->_stopReason);
 }
 
 AudioWrapper::~AudioWrapper() {

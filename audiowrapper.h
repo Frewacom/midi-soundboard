@@ -35,6 +35,13 @@ struct TrackInfo {
     int Length;
 };
 
+enum PlaybackStopReason {
+    Overridden = 0,
+    None = 1,
+    Default = 2,
+    StopButton = 3
+};
+
 struct AudioDevice {
     QString Name;
     const char* Id;
@@ -55,6 +62,7 @@ public:
     void ScanForAudioDevices();
     bool Connect(AudioDevice *device);
     void StartPlayback();
+    void StopPlayback(int reason = PlaybackStopReason::None);
     void TrackFinishedCallback();
     void Pause();
     void Play();
@@ -65,13 +73,14 @@ public:
     ISound *CurrentTrack = nullptr;
 
 signals:
-    void TrackFinished();
+    void TrackFinished(int reason);
     void TrackStarted(TrackInfo *track);
 
 public slots:
 
 private:
     SoundReceiver *_receiver;
+    int _stopReason = PlaybackStopReason::None;
 
 };
 

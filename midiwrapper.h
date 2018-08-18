@@ -40,6 +40,7 @@ signals:
 
 private:
     MidiDevice *_connectedDevice;
+    // https://newt.phys.unsw.edu.au/jw/notes.html
     QList<QString> _chords = {
         "C","C#","D","D#","E","F",
         "F#","G","G#","A","A#","B"

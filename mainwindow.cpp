@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->MIDI = new MidiWrapper();
     this->Audio = new AudioWrapper();
+    this->_trackTimer = new QTimer(this);
     this->_addDevicesToSelectionList();
 
     // Set the active screen when starting the application
@@ -27,6 +28,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->HeaderProfileDropdown->view()->window()->setWindowFlags(
         Qt::Popup | Qt::FramelessWindowHint |
         Qt::NoDropShadowWindowHint
+    );
+
+    // Connect the Track-timer
+    connect(
+        this->_trackTimer, SIGNAL(timeout()),
+        this, SLOT(on_TrackTimer_updated())
     );
 
     // Create the volume modal and connect it to the resize-event
@@ -68,8 +75,8 @@ MainWindow::MainWindow(QWidget *parent) :
     );
 
     connect(
-        this->Audio, SIGNAL(TrackFinished()),
-        this, SLOT(on_TrackFinished())
+        this->Audio, SIGNAL(TrackFinished(int)),
+        this, SLOT(on_TrackFinished(int))
     );
 
     Helpers::SetStyleSheet(ui->centralWidget, ":/styles/main.css");
@@ -83,13 +90,8 @@ void MainWindow::resizeEvent(QResizeEvent* event)
 }
 // Callback when a header-button has been clicked (main-nav)
 void MainWindow::on_HeaderButton_clicked() {
-    if (this->_activeHeaderButton != nullptr) {
-        this->_activeHeaderButton->setChecked(false);
-    }
-
     QPushButton *button = qobject_cast<QPushButton*>(sender());
-    this->_activeHeaderButton = button;
-    ui->ScreenWidget->setCurrentIndex(this->_buttonIdentifiers[button]);
+    this->_setCurrentPage(button);
 
     // We don't need to have the button enabled if they have saved their
     // prefrences, since it will enable again if something changes,
@@ -98,6 +100,16 @@ void MainWindow::on_HeaderButton_clicked() {
         ui->DeviceSelectionSaveButton->setEnabled(false);
         this->_deviceSaveButtonPressed = false;
     }
+}
+
+void MainWindow::_setCurrentPage(QPushButton *button) {
+    if (this->_activeHeaderButton != nullptr) {
+        this->_activeHeaderButton->setChecked(false);
+    }
+
+    this->_activeHeaderButton = button;
+    button->setChecked(true);
+    ui->ScreenWidget->setCurrentIndex(this->_buttonIdentifiers[button]);
 }
 
 // Callback for when the user wants to scan for MIDI-devices
@@ -110,6 +122,7 @@ void MainWindow::on_DeviceSelectionRescanButton_clicked() {
 // Adds devices to the QListWidget
 void MainWindow::_addDevicesToSelectionList() {
     ui->DeviceSelectionList->clear();
+    ui->DeviceSelectionAudioList->clear();
 
     for (int i = 0; i < this->MIDI->Devices.size(); i++) {
         ui->DeviceSelectionList->addItem(this->MIDI->Devices[i].Name);
@@ -161,7 +174,7 @@ void MainWindow::on_DeviceSelectionSaveButton_clicked() {
 
     if (this->MIDI->Connect(&device)) {
         qDebug() << "Conected to " << device.Name;
-        ui->ScreenWidget->setCurrentIndex(0);
+        this->_setCurrentPage(ui->HeaderStatusButton);
     }
 
     QModelIndexList indexes = ui->DeviceSelectionAudioList->selectionModel()->selectedIndexes();
@@ -185,16 +198,27 @@ void MainWindow::on_StatusControlsVolume_clicked() {
 void MainWindow::on_StatusControlsPausePlay_clicked(bool checked) {
     if (this->Audio->CurrentTrack != nullptr) {
         if (!this->Audio->CurrentTrack->isFinished()) {
-            if (checked) {
+            if (!checked) {
+                qDebug() << "Pause";
                 this->Audio->Pause();
+                this->_trackTimer->stop();
             } else {
                 this->Audio->Play();
+                this->_trackTimer->start(10);
             }
         }
     } else {
         ui->StatusControlsPausePlay->setChecked(false);
     }
 }
+
+void MainWindow::on_StatusControlsReset_clicked() {
+    if (this->Audio->CurrentTrack != nullptr) {
+        this->Audio->StopPlayback(PlaybackStopReason::StopButton);
+        this->_trackTimer->stop();
+    }
+}
+
 
 // MIDI callbacks
 void MainWindow::OnMidiKeyDown(unsigned int key) {
@@ -219,20 +243,32 @@ void MainWindow::on_TrackStarted(TrackInfo *track) {
     );
     ui->StatusControlsTimeCurrent->setText("00:00");
     ui->StatusControlsTimebar->setValue(0);
+    ui->StatusControlsTimebar->setRange(0, track->Length);
+
+    this->_trackTimer->start(10);
 }
 
-void MainWindow::on_TrackFinished() {
-    // TODO: We need to check if this signal was sent
-    // because of a playback of a new track or simply because
-    // the user wanted to stop it.
-    // If it's because of a new track - check if the new track is the
-    // same as the previous track to avoid updating the UI for no reason
-    ui->StatusControlsSong->setText("Nothing");
-    ui->StatusControlsPausePlay->setChecked(false);
-    ui->StatusControlsTimeLength->setText("00:00");
-    ui->StatusControlsTimeCurrent->setText("00:00");
-    ui->StatusControlsTimebar->setValue(0);
-    qDebug() << "I run";
+void MainWindow::on_TrackFinished(int reason) {
+    this->_trackTimer->stop();
+
+    if (reason != PlaybackStopReason::Overridden) {
+        ui->StatusControlsSong->setText("Nothing");
+        ui->StatusControlsPausePlay->setChecked(false);
+        ui->StatusControlsTimeLength->setText("00:00");
+        ui->StatusControlsTimeCurrent->setText("00:00");
+        ui->StatusControlsTimebar->setValue(0);
+    }
+}
+
+void MainWindow::on_TrackTimer_updated() {
+    int currentPosition = this->Audio->CurrentTrack->getPlayPosition();
+
+    if (currentPosition != -1) {
+        ui->StatusControlsTimebar->setValue(currentPosition);
+        ui->StatusControlsTimeCurrent->setText(
+            QDateTime::fromMSecsSinceEpoch(currentPosition).toUTC().toString("mm:ss")
+        );
+    }
 }
 
 MainWindow::~MainWindow() {
