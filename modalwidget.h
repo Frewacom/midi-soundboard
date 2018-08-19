@@ -21,6 +21,8 @@ public:
     void setSize(QSize *size);
     void open();
 
+    ModalContentWidget *ContentWidget;
+
 signals:
 
 public slots:

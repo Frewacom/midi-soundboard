@@ -50,6 +50,13 @@ MainWindow::MainWindow(QWidget *parent) :
         this->_volumeModal, SLOT(onResize(QSize*))
     );
 
+    connect(
+        this->_volumeModal->ContentWidget,
+        SIGNAL(volumeChanged(int, QString)),
+        this,
+        SLOT(on_AudioVolume_changed(int, QString))
+    );
+
     // We want to use the same function for all header-buttons,
     // hence why we connect them manually
     connect(
@@ -113,6 +120,7 @@ void MainWindow::_setCurrentPage(QPushButton *button) {
 void MainWindow::on_MidiRescanButton_clicked() {
     this->MIDI->ScanForMidiDevices();
     this->_addMidiDevicesToSelectionList();
+    this->MIDI->Disconnect();
 }
 
 void MainWindow::on_AudioRescanButton_clicked() {
@@ -169,6 +177,14 @@ void MainWindow::on_AudioSelectionList_itemClicked(QListWidgetItem *item)
     } else {
         this->Audio->Disconnect(item->text());
     }
+
+    this->_populateVolumeModal();
+}
+
+void MainWindow::_populateVolumeModal() {
+    VolumeSelectorWidget *volumeWidget =
+            (VolumeSelectorWidget*) this->_volumeModal->ContentWidget;
+    volumeWidget->SetDevices(&this->Audio->Engines);
 }
 
 // Status screen
@@ -250,6 +266,10 @@ void MainWindow::on_TrackTimer_updated() {
             QDateTime::fromMSecsSinceEpoch(currentPosition).toUTC().toString("mm:ss")
         );
     }
+}
+
+void MainWindow::on_AudioVolume_changed(int value, QString name) {
+    this->Audio->SetVolume(value, name);
 }
 
 MainWindow::~MainWindow() {

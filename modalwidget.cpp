@@ -13,6 +13,7 @@ ModalWidget::ModalWidget(
     this->_root->setAccessibleName("modal-root");
     this->_root->setLayout(this->_layout);
 
+    this->ContentWidget = content;
     this->_currentSize = size;
     this->_layout->addWidget(content, 1, Qt::AlignHCenter | Qt::AlignVCenter);
     connect(content, SIGNAL(closeModal()), this, SLOT(onClose()));

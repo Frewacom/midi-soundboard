@@ -19,6 +19,9 @@ public:
     );
     ~VolumeSelectorItem();
 
+signals:
+    void volumeChanged(int value, QString device);
+
 private slots:
     void on_VolumeSlider_valueChanged(int value);
 

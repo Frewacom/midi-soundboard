@@ -18,6 +18,13 @@ void Helpers::SetStyleSheet(QWidget *widget, QString url) {
     widget->setStyleSheet(styleSheet);
 }
 
+void Helpers::EmptyLayout(QLayout *layout) {
+    QLayoutItem *child;
+    while ((child = layout->takeAt(0)) != 0) {
+        delete child;
+    }
+}
+
 QDir Helpers::GetApplicationPath() {
     return QCoreApplication::applicationDirPath();
 }

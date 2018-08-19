@@ -18,9 +18,9 @@ VolumeSelectorItem::VolumeSelectorItem(
 
 void VolumeSelectorItem::on_VolumeSlider_valueChanged(int value) {
     ui->VolumeLabel->setText(QString::number(value));
+    emit this->volumeChanged(value, ui->AudioDevice->text());
 }
 
-VolumeSelectorItem::~VolumeSelectorItem()
-{
+VolumeSelectorItem::~VolumeSelectorItem() {
     delete ui;
 }

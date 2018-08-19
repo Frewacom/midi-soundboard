@@ -18,6 +18,7 @@ QPushButton
 	border-radius: 2px;
 	padding: 4px 10px;
     font-size: 12px;
+    outline: none;
 }
 
 QPushButton:hover
@@ -151,7 +152,7 @@ QListWidget
 
 QListWidget:item
 {
-    padding: 8px 6px;
+    padding: 8px;
     margin-bottom: 5px;
     margin-right: 5px;
     color: white;
@@ -162,7 +163,6 @@ QListWidget:item
 QListWidget:item:selected
 {
     background-color: #236DDC;
-    font-weight: bold;
 }
 
 QLabel
@@ -396,6 +396,12 @@ QLabel#VolumeSelectorTitle
     font-weight: bold;
 }
 
+QLabel#AudioDevice
+{
+    font-size: 13px;
+    color: white;
+}
+
 QScrollArea, QScrollArea > QWidget > QWidget
 {
     background: #1B1B1B;
@@ -406,10 +412,17 @@ QScrollArea, QScrollArea > QWidget > QWidget
 QLabel#VolumeLabel
 {
     font-weight: bold;
+    font-size: 13px;
 }
 
 QFrame#VolumeSelectorItemFrame
 {
     border-bottom: 1px solid #202020;
     padding: 0px 0px;
+}
+
+QLabel[accessibleName="no-audio-devices"]
+{
+    padding: 8px 12px;
+    font: 10pt 'Lato';
 }

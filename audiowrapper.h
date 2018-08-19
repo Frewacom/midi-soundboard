@@ -68,6 +68,7 @@ public:
     void TrackFinishedCallback();
     void Pause();
     void Play();
+    void SetVolume(int volume, QString deviceName);
 
     std::vector<AudioDevice> Devices;
     std::vector<AudioEngine> Engines;

@@ -646,7 +646,7 @@
            <bool>false</bool>
           </property>
           <property name="dragDropMode">
-           <enum>QAbstractItemView::NoDragDrop</enum>
+           <enum>QAbstractItemView::DropOnly</enum>
           </property>
           <property name="defaultDropAction">
            <enum>Qt::IgnoreAction</enum>
@@ -654,8 +654,11 @@
           <property name="selectionMode">
            <enum>QAbstractItemView::SingleSelection</enum>
           </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
           <property name="movement">
-           <enum>QListView::Free</enum>
+           <enum>QListView::Static</enum>
           </property>
           <property name="resizeMode">
            <enum>QListView::Adjust</enum>
@@ -782,7 +785,7 @@
            <bool>false</bool>
           </property>
           <property name="dragDropMode">
-           <enum>QAbstractItemView::NoDragDrop</enum>
+           <enum>QAbstractItemView::DropOnly</enum>
           </property>
           <property name="defaultDropAction">
            <enum>Qt::IgnoreAction</enum>
@@ -790,8 +793,11 @@
           <property name="selectionMode">
            <enum>QAbstractItemView::MultiSelection</enum>
           </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
           <property name="movement">
-           <enum>QListView::Free</enum>
+           <enum>QListView::Static</enum>
           </property>
           <property name="resizeMode">
            <enum>QListView::Adjust</enum>

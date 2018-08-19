@@ -49,6 +49,7 @@ private slots:
     void on_AudioSelectionList_itemClicked(QListWidgetItem *item);
     void on_MidiRescanButton_clicked();
     void on_AudioRescanButton_clicked();
+    void on_AudioVolume_changed(int value, QString name);
 
 private:
     Ui::MainWindow *ui;
@@ -61,6 +62,7 @@ private:
     void _addMidiDevicesToSelectionList();
     void _addAudioDevicesToSelectionList();
     void _setCurrentPage(QPushButton *button);
+    void _populateVolumeModal();
 
 protected:
     void resizeEvent(QResizeEvent* event);

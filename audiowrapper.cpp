@@ -110,6 +110,14 @@ void AudioWrapper::Play() {
     }
 }
 
+void AudioWrapper::SetVolume(int volume, QString deviceName) {
+    AudioEngine *device = this->_getAudioEngineByName(deviceName);
+
+    if (device != nullptr) {
+        device->Engine->setSoundVolume((float)volume / (float)100);
+    }
+}
+
 void AudioWrapper::TrackFinishedCallback() {
     this->CurrentTrack = nullptr;
     this->_stopReason = PlaybackStopReason::None;

@@ -59,13 +59,13 @@ bool MidiWrapper::Connect(MidiDevice *device) {
 }
 
 QString MidiWrapper::GetChordFromKey(unsigned int key) {
-    unsigned int index = key % 24;
+    unsigned int index = key - 21;
 
     // Some keys gives an remainder of 12-23.
     // Using modulus 12 on 12-23 will give us a number
     // between 0-11, which are valid indexes.
-    if (index > 11) {
-        index %= 12;
+    if (index > 87) {
+        return "---";
     }
 
     return this->_chords[index];
