@@ -60,7 +60,9 @@ public:
     ~AudioWrapper();
 
     void ScanForAudioDevices();
-    bool Connect(AudioDevice *device);
+    bool Connect(QString name);
+    void Disconnect(QString name);
+    void DisconnectAll();
     void StartPlayback();
     void StopPlayback(int reason = PlaybackStopReason::None);
     void TrackFinishedCallback();
@@ -81,6 +83,9 @@ public slots:
 private:
     SoundReceiver *_receiver;
     int _stopReason = PlaybackStopReason::None;
+
+    AudioDevice *_getAudioDeviceByName(QString name);
+    AudioEngine *_getAudioEngineByName(QString name);
 
 };
 

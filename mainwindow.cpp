@@ -10,18 +10,19 @@ MainWindow::MainWindow(QWidget *parent) :
     this->MIDI = new MidiWrapper();
     this->Audio = new AudioWrapper();
     this->_trackTimer = new QTimer(this);
-    this->_addDevicesToSelectionList();
+    this->_addMidiDevicesToSelectionList();
+    this->_addAudioDevicesToSelectionList();
 
     // Set the active screen when starting the application
     this->_activeHeaderButton = ui->HeaderStatusButton;
     this->_activeHeaderButton->setChecked(true);
-    ui->DeviceSelectionSaveButton->setEnabled(false);
 
     // Associate a header-button with an index to a screen
     this->_buttonIdentifiers.insert(ui->HeaderStatusButton, 0);
-    this->_buttonIdentifiers.insert(ui->HeaderDevicesButton, 1);
-    this->_buttonIdentifiers.insert(ui->HeaderBindingsButton, 2);
-    this->_buttonIdentifiers.insert(ui->HeaderSettingsButton, 3);
+    this->_buttonIdentifiers.insert(ui->HeaderMidiButton, 1);
+    this->_buttonIdentifiers.insert(ui->HeaderAudioButton, 2);
+    this->_buttonIdentifiers.insert(ui->HeaderBindingsButton, 3);
+    this->_buttonIdentifiers.insert(ui->HeaderSettingsButton, 4);
 
     ui->HeaderProfileDropdown->addItem("Default");
     ui->HeaderProfileDropdown->addItem("Gaming");
@@ -56,7 +57,11 @@ MainWindow::MainWindow(QWidget *parent) :
         this, SLOT(on_HeaderButton_clicked())
     );
     connect(
-        ui->HeaderDevicesButton, SIGNAL(clicked()),
+        ui->HeaderMidiButton, SIGNAL(clicked()),
+        this, SLOT(on_HeaderButton_clicked())
+    );
+    connect(
+        ui->HeaderAudioButton, SIGNAL(clicked()),
         this, SLOT(on_HeaderButton_clicked())
     );
     connect(
@@ -92,14 +97,6 @@ void MainWindow::resizeEvent(QResizeEvent* event)
 void MainWindow::on_HeaderButton_clicked() {
     QPushButton *button = qobject_cast<QPushButton*>(sender());
     this->_setCurrentPage(button);
-
-    // We don't need to have the button enabled if they have saved their
-    // prefrences, since it will enable again if something changes,
-    // and if it doesn't, we don't need to save anything.
-    if (this->_deviceSaveButtonPressed) {
-        ui->DeviceSelectionSaveButton->setEnabled(false);
-        this->_deviceSaveButtonPressed = false;
-    }
 }
 
 void MainWindow::_setCurrentPage(QPushButton *button) {
@@ -113,82 +110,66 @@ void MainWindow::_setCurrentPage(QPushButton *button) {
 }
 
 // Callback for when the user wants to scan for MIDI-devices
-void MainWindow::on_DeviceSelectionRescanButton_clicked() {
+void MainWindow::on_MidiRescanButton_clicked() {
     this->MIDI->ScanForMidiDevices();
-    this->_addDevicesToSelectionList();
-    ui->DeviceSelectionSaveButton->setEnabled(false);
+    this->_addMidiDevicesToSelectionList();
 }
 
-// Adds devices to the QListWidget
-void MainWindow::_addDevicesToSelectionList() {
-    ui->DeviceSelectionList->clear();
-    ui->DeviceSelectionAudioList->clear();
+void MainWindow::on_AudioRescanButton_clicked() {
+    this->Audio->ScanForAudioDevices();
+    this->_addAudioDevicesToSelectionList();
+    this->Audio->DisconnectAll();
+}
+
+void MainWindow::_addMidiDevicesToSelectionList() {
+    ui->MidiSelectionList->clear();
 
     for (int i = 0; i < this->MIDI->Devices.size(); i++) {
-        ui->DeviceSelectionList->addItem(this->MIDI->Devices[i].Name);
+        ui->MidiSelectionList->addItem(this->MIDI->Devices[i].Name);
     }
+}
+
+void MainWindow::_addAudioDevicesToSelectionList() {
+    ui->AudioSelectionList->clear();
 
     for (int j = 0; j < this->Audio->Devices.size(); j++) {
-        ui->DeviceSelectionAudioList->addItem(this->Audio->Devices[j].Name);
+        ui->AudioSelectionList->addItem(this->Audio->Devices[j].Name);
     }
 }
 
-void MainWindow::_enableDeviceSaveButton() {
-    if (!ui->DeviceSelectionSaveButton->isEnabled()) {
-        if (ui->DeviceSelectionAudioList->selectionModel()->
-                selectedIndexes().size() > 0 &&
-            ui->DeviceSelectionList->selectionModel()->
-                selectedIndexes().size() > 0)
-        {
-            ui->DeviceSelectionSaveButton->setEnabled(true);
-        }
-    }
-}
-
-// When entering the device-selection screen the "Select" button is
-// disabled and we want to enable it once we press an item
-void MainWindow::on_DeviceSelectionList_itemClicked(QListWidgetItem *item) {
-    this->_enableDeviceSaveButton();
-}
-
-void MainWindow::on_DeviceSelectionAudioList_itemClicked(QListWidgetItem *item)
-{
-    if (ui->DeviceSelectionAudioList->selectionModel()->
-        selectedIndexes().size() > 2)
-    {
-        QList<QModelIndex> selections = ui->DeviceSelectionAudioList->
-            selectionModel()->selectedIndexes();
-
-        ui->DeviceSelectionAudioList->selectionModel()->
-            select(selections.first(),QItemSelectionModel::Deselect);
-    }
-
-    this->_enableDeviceSaveButton();
-}
-
-// Callback for when the device-selection-save button is pressed
-void MainWindow::on_DeviceSelectionSaveButton_clicked() {
-    int selectedDeviceIndex = ui->DeviceSelectionList->currentRow();
+void MainWindow::on_MidiSelectionList_itemClicked(QListWidgetItem *item) {
+    int selectedDeviceIndex = ui->MidiSelectionList->currentRow();
     MidiDevice device = this->MIDI->Devices.at(selectedDeviceIndex);
-    this->_deviceSaveButtonPressed = true;
 
     if (this->MIDI->Connect(&device)) {
         qDebug() << "Conected to " << device.Name;
-        this->_setCurrentPage(ui->HeaderStatusButton);
-    }
-
-    QModelIndexList indexes = ui->DeviceSelectionAudioList->selectionModel()->selectedIndexes();
-    for (int i = 0; i < indexes.size(); i++) {
-        int index = indexes.at(i).row();
-
-        if (!this->Audio->Connect(&this->Audio->Devices.at(index))) {
-            Logger::DisplayError(
-                "Could not connect to AudioDevice: " + this->Audio->Devices.at(index).Name
-            );
-        }
     }
 }
 
+void MainWindow::on_AudioSelectionList_itemClicked(QListWidgetItem *item)
+{
+    QList<QModelIndex> selections = ui->AudioSelectionList->
+        selectionModel()->selectedIndexes();
+
+    if (ui->AudioSelectionList->selectionModel()->
+        selectedIndexes().size() > 2)
+    {
+        ui->AudioSelectionList->selectionModel()->
+            select(selections.first(), QItemSelectionModel::Deselect);
+
+        this->Audio->Disconnect(selections.first().data().toString());
+    }
+
+    if (item->isSelected()) {
+        if (!this->Audio->Connect(item->text())) {
+            Logger::DisplayError(
+                "Could not connect to audio device: " + item->text()
+            );
+        }
+    } else {
+        this->Audio->Disconnect(item->text());
+    }
+}
 
 // Status screen
 void MainWindow::on_StatusControlsVolume_clicked() {

@@ -33,9 +33,9 @@ QFrame#Header
 
 QFrame[accessibleName="sub-header"]
 {
-    border-top: 1px solid #161616;
-    background-color: #121212;
-    padding: 8px 10px;
+    background-color: transparent;
+    padding: 5px 0px;
+    padding-bottom: 5px;
 }
 
 QFrame#StatusMainFrame
@@ -57,7 +57,7 @@ QFrame#StatusControlsVolumeFrame
 
 QFrame[accessibleName="modal-root"]
 {
-    background-color: rgba(15,15,15,0.6);
+    background-color: rgba(15,15,15,0.9);
 }
 
 QPushButton[accessibleName="btn-header"]
@@ -123,12 +123,12 @@ QPushButton[accessibleName="btn-save"]:hover
 
 QPushButton[accessibleName="controls-btn"]
 {
-    height: 50px;
-    width: 50px;
+    height: 44px;
+    width: 44px;
     background-color: #383838;
-    border-radius: 25px;
+    border-radius: 22px;
     padding: 0px;
-    qproperty-iconSize: 25px 25px;
+    qproperty-iconSize: 24px 24px;
 }
 
 QAbstractButton[accessibleName="controls-btn"]:hover
@@ -138,7 +138,7 @@ QAbstractButton[accessibleName="controls-btn"]:hover
 
 *[accessibleName="main-content"]
 {
-    padding: 8px;
+    padding: 0px;
     background-color: transparent;
 }
 
@@ -146,28 +146,23 @@ QListWidget
 {
     outline: 0;
     font-size: 13px;
+    text-align: center;
 }
 
 QListWidget:item
 {
-    border: 1px solid transparent;
-    border-bottom: 1px solid #2A2A2A;
     padding: 8px 6px;
-    color: white;
-    border-radius: 2px;
+    margin-bottom: 5px;
     margin-right: 5px;
-}
-
-QListWidget#DeviceSelectionAudioList:item
-{
-    margin-bottom: 2px;
+    color: white;
+    border-radius: 3px;
+    background-color: #373737;
 }
 
 QListWidget:item:selected
 {
-    background-color: #2A2A2A;
-    border-color: #2A2A2A;
-    border: 1px solid #236DDC;
+    background-color: #236DDC;
+    font-weight: bold;
 }
 
 QLabel
@@ -188,7 +183,7 @@ QLabel#StatusControlsSongTitle
 {
     color: white;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
     margin: 0px;
     padding: 0px;
 }
@@ -196,7 +191,7 @@ QLabel#StatusControlsSongTitle
 QLabel#StatusControlsSong
 {
     color: #8C8C8C;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     margin: 0px;
     padding: 0px;
@@ -206,7 +201,7 @@ QLabel[accessibleName="controls-time-label"]
 {
     color: white;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 QLabel[accessibleName="controls-volume-icon"]
@@ -290,23 +285,30 @@ QScrollBar:vertical
     width: 6px;
     background: #383838;
     border: none;
+    border-radius: 3px;
 }
 
 QScrollBar:handle:vertical
 {
     background: #236DDC;
+    border-radius: 3px;
 }
 
 QScrollBar:add-page:vertical,
 QScrollBar:sub-page:vertical
 {
     background: #383838;
+    border-radius: 3px;
 }
+
 
 QScrollBar::up-arrow:vertical,
 QScrollBar::down-arrow:vertical 
 {
+    qproperty-iconSize: 0px 0px;
+    border-image: none;
     background: none;
+    border-radius: 3px;
 }
 
 QComboBox
@@ -367,7 +369,7 @@ QComboBox QAbstractItemView::item
 
 QFrame#VolumeSelectorFrame
 {
-    margin-bottom: 50px;
+    margin-bottom: 10px;
     background-color: #292929;
     border-radius: 15px;
     padding-bottom: 30px;

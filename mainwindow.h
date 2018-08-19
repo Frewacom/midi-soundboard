@@ -38,17 +38,17 @@ signals:
     void Resized(QSize *newSize);
 
 private slots:
-    void on_DeviceSelectionRescanButton_clicked();
     void on_HeaderButton_clicked();
-    void on_DeviceSelectionList_itemClicked(QListWidgetItem *item);
-    void on_DeviceSelectionSaveButton_clicked();
-    void on_DeviceSelectionAudioList_itemClicked(QListWidgetItem *item);
     void on_StatusControlsVolume_clicked();
     void on_TrackFinished(int reason);
     void on_TrackStarted(TrackInfo *track);
     void on_StatusControlsPausePlay_clicked(bool checked);
     void on_StatusControlsReset_clicked();
     void on_TrackTimer_updated();
+    void on_MidiSelectionList_itemClicked(QListWidgetItem *item);
+    void on_AudioSelectionList_itemClicked(QListWidgetItem *item);
+    void on_MidiRescanButton_clicked();
+    void on_AudioRescanButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -58,10 +58,8 @@ private:
     ModalWidget *_volumeModal = nullptr;
     QTimer *_trackTimer;
 
-    bool _deviceSaveButtonPressed = false;
-
-    void _addDevicesToSelectionList();
-    void _enableDeviceSaveButton();
+    void _addMidiDevicesToSelectionList();
+    void _addAudioDevicesToSelectionList();
     void _setCurrentPage(QPushButton *button);
 
 protected:
