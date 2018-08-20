@@ -28,3 +28,24 @@ void Helpers::EmptyLayout(QLayout *layout) {
 QDir Helpers::GetApplicationPath() {
     return QCoreApplication::applicationDirPath();
 }
+
+bool Helpers::CheckIfFileExists(QString path) {
+    QFileInfo check_file(path);
+    // check if file exists and if yes: Is it really a file and no directory?
+    if (check_file.exists() && check_file.isFile()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+QJsonDocument Helpers::GetFileJSONContents(QString path) {
+    QFile file;
+    file.setFileName(path);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString val = file.readAll();
+    QJsonDocument json = QJsonDocument::fromJson(val.toUtf8());
+    file.close();
+
+    return json;
+}

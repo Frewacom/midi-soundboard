@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->MIDI = new MidiWrapper();
     this->Audio = new AudioWrapper();
+    this->Settings = new ConfigWrapper();
+
     this->_trackTimer = new QTimer(this);
     this->_addMidiDevicesToSelectionList();
     this->_addAudioDevicesToSelectionList();
@@ -29,6 +31,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->HeaderProfileDropdown->view()->window()->setWindowFlags(
         Qt::Popup | Qt::FramelessWindowHint |
         Qt::NoDropShadowWindowHint
+    );
+
+    // Connect config-events
+    connect(
+        this->Settings, SIGNAL(currentProfileLoaded(ProfilePacket*)),
+        this, SLOT(on_currentProfileLoaded(ProfilePacket*))
     );
 
     // Connect the Track-timer
@@ -270,6 +278,12 @@ void MainWindow::on_TrackTimer_updated() {
 
 void MainWindow::on_AudioVolume_changed(int value, QString name) {
     this->Audio->SetVolume(value, name);
+}
+
+// Config callbacks
+void MainWindow::on_currentProfileLoaded(ProfilePacket *packet) {
+    qDebug() << "Hello";
+    qDebug() << packet->MidiDevice;
 }
 
 MainWindow::~MainWindow() {

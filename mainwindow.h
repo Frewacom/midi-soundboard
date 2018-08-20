@@ -13,6 +13,7 @@
 #include "volumeselectorwidget.h"
 #include "midiwrapper.h"
 #include "audiowrapper.h"
+#include "configwrapper.h"
 #include "helpers.h"
 
 // https://github.com/Skycoder42/QHotkey
@@ -31,6 +32,7 @@ public:
 
     MidiWrapper *MIDI;
     AudioWrapper *Audio;
+    ConfigWrapper *Settings;
     void OnMidiKeyDown(unsigned int key);
     void OnMidiKeyUp(unsigned int key);
 
@@ -50,6 +52,7 @@ private slots:
     void on_MidiRescanButton_clicked();
     void on_AudioRescanButton_clicked();
     void on_AudioVolume_changed(int value, QString name);
+    void on_currentProfileLoaded(ProfilePacket *packet);
 
 private:
     Ui::MainWindow *ui;

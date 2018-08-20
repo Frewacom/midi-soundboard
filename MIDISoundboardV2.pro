@@ -34,7 +34,9 @@ SOURCES += \
     volumeselectorwidget.cpp \
     modalcontentwidget.cpp \
     volumeselectoritem.cpp \
-    audiowrapper.cpp
+    audiowrapper.cpp \
+    configwrapper.cpp \
+    configuration.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -46,7 +48,9 @@ HEADERS += \
     volumeselectorwidget.h \
     modalcontentwidget.h \
     volumeselectoritem.h \
-    audiowrapper.h
+    audiowrapper.h \
+    configwrapper.h \
+    configuration.h
 
 FORMS += \
         mainwindow.ui \
