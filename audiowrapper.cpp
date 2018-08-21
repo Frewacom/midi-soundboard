@@ -29,6 +29,10 @@ void AudioWrapper::ScanForAudioDevices() {
     }
 }
 
+// TODO: Consider changing the return type to AudioEngine
+// so that we can pass that refrence into other calls without
+// having to loop through all devices every time we want to
+// increase volume or something
 bool AudioWrapper::Connect(QString name) {
     AudioDevice *device = this->_getAudioDeviceByName(name);
 

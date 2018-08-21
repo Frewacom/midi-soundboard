@@ -46,15 +46,16 @@ bool MidiWrapper::Connect(MidiDevice *device) {
         try {
             this->_midi->openPort(device->Port);
             this->_connectedDevice = device;
+            qDebug() << "Connected to " + device->Name;
+            return true;
         } catch (RtMidiError &error) {
             Logger::DisplayError(
                 QString::fromStdString(error.getMessage())
             );
 
+            qDebug() << "Could not connect to: " + device->Name;
             return false;
         }
-
-        return true;
     }
 }
 
@@ -69,6 +70,16 @@ QString MidiWrapper::GetChordFromKey(unsigned int key) {
     }
 
     return this->_chords[index];
+}
+
+MidiDevice* MidiWrapper::GetDeviceByName(QString name) {
+    for (int i = 0; i < this->Devices.size(); i++) {
+        if (this->Devices.at(i).Name == name) {
+            return &this->Devices.at(i);
+        }
+    }
+
+    return nullptr;
 }
 
 void MidiWrapper::Disconnect() {

@@ -52,7 +52,6 @@ private slots:
     void on_MidiRescanButton_clicked();
     void on_AudioRescanButton_clicked();
     void on_AudioVolume_changed(int value, QString name);
-    void on_currentProfileLoaded(ProfilePacket *packet);
 
 private:
     Ui::MainWindow *ui;
@@ -66,6 +65,9 @@ private:
     void _addAudioDevicesToSelectionList();
     void _setCurrentPage(QPushButton *button);
     void _populateVolumeModal();
+    void _applyProfile(ProfilePacket *packet);
+    void _selectItemsByText(QListWidget *widget, QList<QString> *names);
+    void _selectItemsByText(QListWidget *widget, QString name);
 
 protected:
     void resizeEvent(QResizeEvent* event);

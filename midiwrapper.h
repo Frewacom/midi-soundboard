@@ -27,6 +27,7 @@ public:
     bool Connect(MidiDevice *device);
     void Disconnect();
     QString GetChordFromKey(unsigned int key);
+    MidiDevice* GetDeviceByName(QString name);
 
     // We need this to public atm so that we can
     // access the setCallback method from main.cpp.

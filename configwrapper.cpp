@@ -20,8 +20,9 @@ void ConfigWrapper::_parseSettingsJSON() {
             QJsonDocument profile = Helpers::GetFileJSONContents(path);
             this->_currentProfile = profile.object();
 
-            ProfilePacket *packet = this->_packetProfileJSON(this->_currentProfile);
-            emit this->currentProfileLoaded(packet);
+            this->_currentProfilePacket = this->_packetProfileJSON(
+                this->_currentProfile
+            );
         }
     }
 }
@@ -44,19 +45,25 @@ ProfilePacket* ConfigWrapper::_packetProfileJSON(QJsonObject profile) {
         foreach (const QJsonValue &value, deviceArray) {
             AudioDevicePacket *devicePacket = new AudioDevicePacket();
 
-            QJsonValue deviceId = value["id"];
             QJsonValue deviceName = value["name"];
             QJsonValue deviceVolume = value["volume"];
 
-            if (!deviceId.isNull()) devicePacket->Id = deviceId.toInt();
             if (deviceName.isString()) devicePacket->Name = deviceName.toString();
-            if (!deviceVolume.isNull()) devicePacket->Volume = deviceName.toInt();
+            if (!deviceVolume.isNull()) devicePacket->Volume = deviceVolume.toString().toInt();
 
             packet->AudioDevices.append(devicePacket);
         }
     }
 
     return packet;
+}
+
+ProfilePacket* ConfigWrapper::GetCurrentProfile() {
+    return this->_currentProfilePacket;
+}
+
+void ConfigWrapper::UpdateDeviceVolume(QString name, int volume) {
+
 }
 
 ConfigWrapper::~ConfigWrapper() {

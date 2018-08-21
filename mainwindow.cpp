@@ -33,12 +33,6 @@ MainWindow::MainWindow(QWidget *parent) :
         Qt::NoDropShadowWindowHint
     );
 
-    // Connect config-events
-    connect(
-        this->Settings, SIGNAL(currentProfileLoaded(ProfilePacket*)),
-        this, SLOT(on_currentProfileLoaded(ProfilePacket*))
-    );
-
     // Connect the Track-timer
     connect(
         this->_trackTimer, SIGNAL(timeout()),
@@ -99,6 +93,12 @@ MainWindow::MainWindow(QWidget *parent) :
         this, SLOT(on_TrackFinished(int))
     );
 
+    // Apply current profile - if one is chosen
+    ProfilePacket *packet = this->Settings->GetCurrentProfile();
+    if (packet) {
+        this->_applyProfile(packet);
+    }
+
     Helpers::SetStyleSheet(ui->centralWidget, ":/styles/main.css");
 }
 
@@ -122,6 +122,49 @@ void MainWindow::_setCurrentPage(QPushButton *button) {
     this->_activeHeaderButton = button;
     button->setChecked(true);
     ui->ScreenWidget->setCurrentIndex(this->_buttonIdentifiers[button]);
+}
+
+// Config functions
+void MainWindow::_applyProfile(ProfilePacket *packet) {
+    ui->HeaderProfileDropdown->setCurrentText(packet->Name);
+
+    MidiDevice *midiDevice = this->MIDI->GetDeviceByName(packet->MidiDevice);
+    if (midiDevice != nullptr) {
+        this->MIDI->Connect(midiDevice);
+        this->_selectItemsByText(ui->MidiSelectionList, midiDevice->Name);
+    }
+
+    if (packet->AudioDevices.size() > 0) {
+        QList<QString> *audioDeviceNames = new QList<QString>();
+
+        for (int i = 0; i < packet->AudioDevices.size(); i++) {
+            AudioDevicePacket *audioDevice = packet->AudioDevices.at(i);
+            audioDeviceNames->append(audioDevice->Name);
+            this->Audio->Connect(audioDevice->Name);
+            this->Audio->SetVolume(audioDevice->Volume, audioDevice->Name);
+        }
+
+        this->_selectItemsByText(ui->AudioSelectionList, audioDeviceNames);
+        this->_populateVolumeModal();
+    }
+}
+
+void MainWindow::_selectItemsByText(QListWidget *widget, QString name) {
+    for (int i = 0; i < widget->count(); i++) {
+        if (widget->item(i)->text() == name) {
+            widget->item(i)->setSelected(true);
+        }
+    }
+}
+
+void MainWindow::_selectItemsByText(QListWidget *widget, QList<QString> *names) {
+    for (int i = 0; i < widget->count(); i++) {
+        for (int j = 0; j < names->size(); j++) {
+            if (widget->item(i)->text() == names->at(j)) {
+                widget->item(i)->setSelected(true);
+            }
+        }
+    }
 }
 
 // Callback for when the user wants to scan for MIDI-devices
@@ -157,9 +200,7 @@ void MainWindow::on_MidiSelectionList_itemClicked(QListWidgetItem *item) {
     int selectedDeviceIndex = ui->MidiSelectionList->currentRow();
     MidiDevice device = this->MIDI->Devices.at(selectedDeviceIndex);
 
-    if (this->MIDI->Connect(&device)) {
-        qDebug() << "Conected to " << device.Name;
-    }
+    this->MIDI->Connect(&device);
 }
 
 void MainWindow::on_AudioSelectionList_itemClicked(QListWidgetItem *item)
@@ -191,7 +232,7 @@ void MainWindow::on_AudioSelectionList_itemClicked(QListWidgetItem *item)
 
 void MainWindow::_populateVolumeModal() {
     VolumeSelectorWidget *volumeWidget =
-            (VolumeSelectorWidget*) this->_volumeModal->ContentWidget;
+        (VolumeSelectorWidget*)this->_volumeModal->ContentWidget;
     volumeWidget->SetDevices(&this->Audio->Engines);
 }
 
@@ -241,6 +282,8 @@ void MainWindow::OnMidiKeyUp(unsigned int key) {
 
 // Audio callbacks
 void MainWindow::on_TrackStarted(TrackInfo *track) {
+    qDebug() << "TRACK STARTED";
+
     ui->StatusControlsSong->setText(track->Name);
     ui->StatusControlsPausePlay->setChecked(true);
     ui->StatusControlsTimeLength->setText(
@@ -278,14 +321,10 @@ void MainWindow::on_TrackTimer_updated() {
 
 void MainWindow::on_AudioVolume_changed(int value, QString name) {
     this->Audio->SetVolume(value, name);
-}
-
-// Config callbacks
-void MainWindow::on_currentProfileLoaded(ProfilePacket *packet) {
-    qDebug() << "Hello";
-    qDebug() << packet->MidiDevice;
+    this->Settings->UpdateDeviceVolume(name, value);
 }
 
 MainWindow::~MainWindow() {
+    // TODO: Save all data when we quit
     delete ui;
 }

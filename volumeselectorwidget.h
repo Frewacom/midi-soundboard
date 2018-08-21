@@ -2,6 +2,7 @@
 #define VOLUMESELECTORWIDGET_H
 
 #include <QWidget>
+#include <QMap>
 #include <QSpacerItem>
 #include "audiowrapper.h"
 #include "helpers.h"
@@ -31,6 +32,7 @@ private slots:
 
 private:
     Ui::VolumeSelectorWidget *ui;
+
 };
 
 #endif // VOLUMESELECTORWIDGET_H

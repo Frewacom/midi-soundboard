@@ -15,7 +15,6 @@
 #include "helpers.h"
 
 struct AudioDevicePacket {
-    int Id;
     QString Name;
     int Volume;
 };
@@ -34,8 +33,11 @@ public:
     explicit ConfigWrapper(QObject *parent = nullptr);
     ~ConfigWrapper();
 
+    ProfilePacket* GetCurrentProfile();
+    void UpdateDeviceVolume(QString name, int volume);
+
+
 signals:
-    void currentProfileLoaded(ProfilePacket *packet);
 
 public slots:
 
@@ -44,7 +46,9 @@ private:
     QString _settingsPath;
     QJsonDocument _settingsContents;
     QJsonObject _settingsJSON;
+
     QJsonObject _currentProfile;
+    ProfilePacket *_currentProfilePacket = nullptr;
 
     void _parseSettingsJSON();
     ProfilePacket* _packetProfileJSON(QJsonObject profile);
