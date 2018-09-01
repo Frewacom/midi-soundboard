@@ -33,7 +33,8 @@ ProfilePacket* ConfigWrapper::_packetProfileJSON(QJsonObject profile) {
     QJsonValue name = profile["name"];
     QJsonValue midiDevice = profile["midi_device"];
     QJsonValue audioDevices = profile["audio_devices"];
-    QJsonValue bindings = profile["bindings"];
+    QVariantMap profileMap = profile.toVariantMap();
+    QVariantMap bindings = profileMap["bindings"].toMap();
 
     // TODO: We probably want to check if its empty
     // - and insert some placeholder name instead
@@ -55,6 +56,12 @@ ProfilePacket* ConfigWrapper::_packetProfileJSON(QJsonObject profile) {
         }
     }
 
+    for(int i = 0; i < bindings.keys().count(); i++){
+        QString key = bindings.keys().at(i);
+        QString binding = bindings[key.toLocal8Bit()].toString();
+        packet->Bindings.insert(key.toInt(), binding);
+    }
+
     return packet;
 }
 
@@ -63,6 +70,27 @@ ProfilePacket* ConfigWrapper::GetCurrentProfile() {
 }
 
 void ConfigWrapper::UpdateDeviceVolume(QString name, int volume) {
+
+}
+
+QString ConfigWrapper::GetBinding(int key) {
+    auto binding = this->_currentProfilePacket->Bindings.find(key);
+    if (binding != this->_currentProfilePacket->Bindings.end()) {
+        return (QString)binding.value();
+    }
+
+    return QString();
+}
+
+void ConfigWrapper::SaveBinding(int key, QString action) {
+
+}
+
+void ConfigWrapper::SaveProfile(ProfilePacket *packet) {
+
+}
+
+void ConfigWrapper::SaveCurrentProfile(QString name) {
 
 }
 

@@ -271,8 +271,29 @@ void MainWindow::OnMidiKeyDown(unsigned int key) {
     ui->StatusPressedKey->setText("KEY " + QString::number(key));
     ui->StatusPressedChord->setText(this->MIDI->GetChordFromKey(key));
 
-    if (key == 24) {
-        this->Audio->StartPlayback();
+    QString action = this->Settings->GetBinding(key);
+    if (!action.isEmpty()) {
+        if (action == "STOP") {
+            this->Audio->StopPlayback(PlaybackStopReason::StopButton);
+        } else if (action == "PAUSE") {
+            if (this->Audio->CurrentTrack != nullptr && !this->Audio->IsPaused) {
+                this->Audio->Pause();
+            }
+        } else if (action == "PAUSE_COMBINED") {
+            if (this->Audio->CurrentTrack != nullptr) {
+                if (this->Audio->IsPaused) {
+                    this->Audio->Play();
+                } else {
+                    this->Audio->Pause();
+                }
+            }
+        } else if (action == "RESUME") {
+            if (this->Audio->CurrentTrack != nullptr && this->Audio->IsPaused) {
+                this->Audio->Play();
+            }
+        } else {
+            this->Audio->StartPlayback(action);
+        }
     }
 }
 
@@ -282,8 +303,6 @@ void MainWindow::OnMidiKeyUp(unsigned int key) {
 
 // Audio callbacks
 void MainWindow::on_TrackStarted(TrackInfo *track) {
-    qDebug() << "TRACK STARTED";
-
     ui->StatusControlsSong->setText(track->Name);
     ui->StatusControlsPausePlay->setChecked(true);
     ui->StatusControlsTimeLength->setText(

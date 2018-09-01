@@ -60,9 +60,7 @@ bool AudioWrapper::Connect(QString name) {
     }
 }
 
-void AudioWrapper::StartPlayback() {
-    QDir path = Helpers::GetApplicationPath();
-
+void AudioWrapper::StartPlayback(QString path) {
     if (this->_stopReason != PlaybackStopReason::None) {
         if (this->CurrentTrack != nullptr) {
             this->_stopReason = PlaybackStopReason::Overridden;
@@ -77,7 +75,7 @@ void AudioWrapper::StartPlayback() {
         for (int i = 0; i < this->Engines.size(); i++) {
             // TODO: Make sure we only assign CurrentTrack once
             this->CurrentTrack = this->Engines.at(i).Engine->play2D(
-                path.filePath("music/boosted-animal.wav").toStdString().c_str(),
+                path.toStdString().c_str(),
                 false,
                 false,
                 true
@@ -86,11 +84,11 @@ void AudioWrapper::StartPlayback() {
 
         this->CurrentTrack->setSoundStopEventReceiver(this->_receiver);
 
-        // Track name should be extracted from the path
         TrackInfo *track = new TrackInfo();
-        track->Name ="boosted-animal.wav";
+        track->Name = path.mid(path.lastIndexOf("\\") + 1, path.length() - 1);
         track->Length = this->CurrentTrack->getPlayLength();
         emit this->TrackStarted(track);
+        this->IsPaused = false;
     }
 }
 
@@ -106,12 +104,16 @@ void AudioWrapper::Pause() {
     for (int i = 0; i < this->Engines.size(); i++) {
         this->Engines.at(i).Engine->setAllSoundsPaused();
     }
+
+    this->IsPaused = true;
 }
 
 void AudioWrapper::Play() {
     for (int i = 0; i < this->Engines.size(); i++) {
         this->Engines.at(i).Engine->setAllSoundsPaused(false);
     }
+
+    this->IsPaused = false;
 }
 
 void AudioWrapper::SetVolume(int volume, QString deviceName) {

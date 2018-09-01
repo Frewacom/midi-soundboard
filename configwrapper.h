@@ -35,7 +35,10 @@ public:
 
     ProfilePacket* GetCurrentProfile();
     void UpdateDeviceVolume(QString name, int volume);
-
+    QString GetBinding(int key);
+    void SaveBinding(int key, QString action);
+    void SaveProfile(ProfilePacket *packet);
+    void SaveCurrentProfile(QString name);
 
 signals:
 

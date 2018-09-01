@@ -63,7 +63,7 @@ public:
     bool Connect(QString name);
     void Disconnect(QString name);
     void DisconnectAll();
-    void StartPlayback();
+    void StartPlayback(QString path);
     void StopPlayback(int reason = PlaybackStopReason::None);
     void TrackFinishedCallback();
     void Pause();
@@ -74,6 +74,7 @@ public:
     std::vector<AudioEngine> Engines;
 
     ISound *CurrentTrack = nullptr;
+    bool IsPaused = false;
 
 signals:
     void TrackFinished(int reason);
