@@ -26,8 +26,6 @@ MainWindow::MainWindow(QWidget *parent) :
     this->_buttonIdentifiers.insert(ui->HeaderBindingsButton, 3);
     this->_buttonIdentifiers.insert(ui->HeaderSettingsButton, 4);
 
-    ui->HeaderProfileDropdown->addItem("Default");
-    ui->HeaderProfileDropdown->addItem("Gaming");
     ui->HeaderProfileDropdown->view()->window()->setWindowFlags(
         Qt::Popup | Qt::FramelessWindowHint |
         Qt::NoDropShadowWindowHint
@@ -93,11 +91,28 @@ MainWindow::MainWindow(QWidget *parent) :
         this, SLOT(on_TrackFinished(int))
     );
 
+    // Config signals
+    connect(
+        this->Settings, SIGNAL(on_Profile_found(QString)),
+        this, SLOT(on_ProfileFound(QString))
+    );
+
     // Apply current profile - if one is chosen
+    if (this->Settings->GetProfiles() == 0) {
+        ui->HeaderProfileDropdown->addItem("No profiles");
+        ui->HeaderProfileDropdown->setCurrentIndex(0);
+        ui->HeaderProfileDropdown->setDisabled(true);
+    }
+
     ProfilePacket *packet = this->Settings->GetCurrentProfile();
     if (packet) {
         this->_applyProfile(packet);
     }
+
+    connect(
+        ui->HeaderProfileDropdown, SIGNAL(currentIndexChanged(int)),
+        this, SLOT(on_HeaderProfileDropdownChanged(int))
+    );
 
     Helpers::SetStyleSheet(ui->centralWidget, ":/styles/main.css");
 }
@@ -124,8 +139,19 @@ void MainWindow::_setCurrentPage(QPushButton *button) {
     ui->ScreenWidget->setCurrentIndex(this->_buttonIdentifiers[button]);
 }
 
+// Profile dropdown callback
+void MainWindow::on_HeaderProfileDropdownChanged(int index) {
+    ProfilePacket *profile = this->Settings->GetProfileByName(
+        ui->HeaderProfileDropdown->currentText()
+    );
+
+    this->_applyProfile(profile);
+}
+
 // Config functions
 void MainWindow::_applyProfile(ProfilePacket *packet) {
+    this->Audio->StopPlayback();
+
     ui->HeaderProfileDropdown->setCurrentText(packet->Name);
 
     MidiDevice *midiDevice = this->MIDI->GetDeviceByName(packet->MidiDevice);
@@ -136,6 +162,7 @@ void MainWindow::_applyProfile(ProfilePacket *packet) {
 
     if (packet->AudioDevices.size() > 0) {
         QList<QString> *audioDeviceNames = new QList<QString>();
+         this->Audio->Engines.clear();
 
         for (int i = 0; i < packet->AudioDevices.size(); i++) {
             AudioDevicePacket *audioDevice = packet->AudioDevices.at(i);
@@ -147,6 +174,8 @@ void MainWindow::_applyProfile(ProfilePacket *packet) {
         this->_selectItemsByText(ui->AudioSelectionList, audioDeviceNames);
         this->_populateVolumeModal();
     }
+
+    this->Settings->SetCurrentProfile(packet);
 }
 
 void MainWindow::_selectItemsByText(QListWidget *widget, QString name) {
@@ -165,6 +194,10 @@ void MainWindow::_selectItemsByText(QListWidget *widget, QList<QString> *names) 
             }
         }
     }
+}
+
+void MainWindow::on_ProfileFound(QString name) {
+    ui->HeaderProfileDropdown->addItem(name);
 }
 
 // Callback for when the user wants to scan for MIDI-devices
@@ -201,6 +234,7 @@ void MainWindow::on_MidiSelectionList_itemClicked(QListWidgetItem *item) {
     MidiDevice device = this->MIDI->Devices.at(selectedDeviceIndex);
 
     this->MIDI->Connect(&device);
+    this->Settings->SaveMidiDevice(device.Name);
 }
 
 void MainWindow::on_AudioSelectionList_itemClicked(QListWidgetItem *item)
@@ -347,3 +381,4 @@ MainWindow::~MainWindow() {
     // TODO: Save all data when we quit
     delete ui;
 }
+

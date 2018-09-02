@@ -17,18 +17,50 @@ void ConfigWrapper::_parseSettingsJSON() {
         QString path = this->_applicationFolder.filePath("config/profiles/" + profile.toString());
 
         if (Helpers::CheckIfFileExists(path)) {
-            QJsonDocument profile = Helpers::GetFileJSONContents(path);
-            this->_currentProfile = profile.object();
+            QJsonDocument profileJSON = Helpers::GetFileJSONContents(path);
+            this->_currentProfile = profileJSON.object();
 
             this->_currentProfilePacket = this->_packetProfileJSON(
+                profile.toString(),
                 this->_currentProfile
             );
         }
     }
 }
 
-ProfilePacket* ConfigWrapper::_packetProfileJSON(QJsonObject profile) {
+int ConfigWrapper::GetProfiles() {
+    QDir profileDir(this->_applicationFolder.filePath("config/profiles"));
+    QDirIterator iterator(
+        profileDir.absolutePath(),
+        QStringList() << "*.json", QDir::Files,
+        QDirIterator::NoIteratorFlags
+    );
+
+    int count = 0;
+    while (iterator.hasNext()) {
+        QFile file(iterator.next());
+        QJsonDocument profile = Helpers::GetFileJSONContents(&file);
+        this->_packetProfileJSON(file.fileName(), profile.object());
+        count++;
+    }
+
+    return count;
+}
+
+ProfilePacket* ConfigWrapper::GetProfileByName(QString name) {
+    auto it = this->_profilePackets.find(name);
+    if (it != this->_profilePackets.end()) {
+        return it.value();
+    }
+}
+
+void ConfigWrapper::SetCurrentProfile(ProfilePacket *packet) {
+    this->_currentProfilePacket = packet;
+}
+
+ProfilePacket* ConfigWrapper::_packetProfileJSON(QString fileName, QJsonObject profile) {
     ProfilePacket *packet = new ProfilePacket();
+    packet->FileName = fileName;
 
     QJsonValue name = profile["name"];
     QJsonValue midiDevice = profile["midi_device"];
@@ -38,7 +70,10 @@ ProfilePacket* ConfigWrapper::_packetProfileJSON(QJsonObject profile) {
 
     // TODO: We probably want to check if its empty
     // - and insert some placeholder name instead
-    if (name.isString()) packet->Name = name.toString();
+    if (name.isString()) {
+        packet->Name = name.toString();
+        emit this->on_Profile_found(name.toString());
+    }
     if (midiDevice.isString()) packet->MidiDevice = midiDevice.toString();
     if (!audioDevices.isNull()) {
         QJsonArray deviceArray = audioDevices.toArray();
@@ -62,6 +97,8 @@ ProfilePacket* ConfigWrapper::_packetProfileJSON(QJsonObject profile) {
         packet->Bindings.insert(key.toInt(), binding);
     }
 
+    this->_profilePackets.insert(name.toString(), packet);
+
     return packet;
 }
 
@@ -83,17 +120,54 @@ QString ConfigWrapper::GetBinding(int key) {
 }
 
 void ConfigWrapper::SaveBinding(int key, QString action) {
-
+    this->_currentProfilePacket->Bindings[key] = action;
 }
 
-void ConfigWrapper::SaveProfile(ProfilePacket *packet) {
+void ConfigWrapper::SaveProfile() {
+    ProfilePacket *packet = this->_currentProfilePacket;
+    QString path = this->_applicationFolder.filePath(
+        "config/profiles/" + this->_currentProfilePacket->FileName
+    );
 
+    QJsonObject obj;
+    QJsonArray audioDevices;
+    QJsonObject bindings;
+    QMapIterator<int, QString> it(packet->Bindings);
+
+    for (int i = 0; i < packet->AudioDevices.size(); i++) {
+        QJsonObject device;
+        device.insert("name", packet->AudioDevices.at(i)->Name);
+        device.insert("volume", packet->AudioDevices.at(i)->Volume);
+        audioDevices.append(device);
+    }
+
+    while (it.hasNext()) {
+        it.next();
+        bindings.insert(QString::number(it.key()), it.value());
+    }
+
+    obj["name"] = packet->Name;
+    obj["midi_device"] = packet->MidiDevice;
+    obj["audio_devices"] = audioDevices;
+    obj["bindings"] = bindings;
+
+    QJsonDocument doc(obj);
+    QString json = doc.toJson();
+    QFile profile(path);
+
+    if (profile.open(QIODevice::WriteOnly)){
+        profile.write(json.toUtf8());
+        profile.close();
+    } else {
+        qDebug() << "Could not write to " << path;
+    }
 }
 
-void ConfigWrapper::SaveCurrentProfile(QString name) {
-
+void ConfigWrapper::SaveMidiDevice(QString device) {
+    this->_currentProfilePacket->MidiDevice = device;
+    this->SaveProfile();
 }
 
 ConfigWrapper::~ConfigWrapper() {
-
+    this->SaveProfile();
 }

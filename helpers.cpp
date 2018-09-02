@@ -49,3 +49,12 @@ QJsonDocument Helpers::GetFileJSONContents(QString path) {
 
     return json;
 }
+
+QJsonDocument Helpers::GetFileJSONContents(QFile *file) {
+    file->open(QIODevice::ReadOnly | QIODevice::Text);
+    QString val = file->readAll();
+    QJsonDocument json = QJsonDocument::fromJson(val.toUtf8());
+    file->close();
+
+    return json;
+}

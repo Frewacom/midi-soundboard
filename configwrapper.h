@@ -12,6 +12,7 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QJsonArray>
+#include <QDirIterator>
 #include "helpers.h"
 
 struct AudioDevicePacket {
@@ -20,6 +21,7 @@ struct AudioDevicePacket {
 };
 
 struct ProfilePacket {
+    QString FileName;
     QString Name;
     QString MidiDevice;
     QList<AudioDevicePacket*> AudioDevices;
@@ -36,11 +38,15 @@ public:
     ProfilePacket* GetCurrentProfile();
     void UpdateDeviceVolume(QString name, int volume);
     QString GetBinding(int key);
+    int GetProfiles();
+    ProfilePacket* GetProfileByName(QString name);
+    void SetCurrentProfile(ProfilePacket *packet);
     void SaveBinding(int key, QString action);
-    void SaveProfile(ProfilePacket *packet);
-    void SaveCurrentProfile(QString name);
+    void SaveProfile();
+    void SaveMidiDevice(QString device);
 
 signals:
+    void on_Profile_found(QString name);
 
 public slots:
 
@@ -52,9 +58,10 @@ private:
 
     QJsonObject _currentProfile;
     ProfilePacket *_currentProfilePacket = nullptr;
+    QMap<QString, ProfilePacket*> _profilePackets;
 
     void _parseSettingsJSON();
-    ProfilePacket* _packetProfileJSON(QJsonObject profile);
+    ProfilePacket* _packetProfileJSON(QString fileName, QJsonObject profile);
 
 };
 

@@ -29,7 +29,7 @@ void VolumeSelectorWidget::SetDevices(std::vector<AudioEngine> *devices) {
         ui->AudioDeviceListLayout->insertWidget(0, label);
     } else {
         for (int i = 0; i < devices->size(); i++) {
-            qDebug() << "Volume: " << devices->at(i).Engine->getSoundVolume() * 100;
+            qDebug() << "Volume: " << devices->at(i).Engine->getSoundVolume();
             VolumeSelectorItem *item = new VolumeSelectorItem(
                 devices->at(i).Data->Name,
                 (int)(devices->at(i).Engine->getSoundVolume() * 100)

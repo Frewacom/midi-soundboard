@@ -52,6 +52,8 @@ private slots:
     void on_MidiRescanButton_clicked();
     void on_AudioRescanButton_clicked();
     void on_AudioVolume_changed(int value, QString name);
+    void on_ProfileFound(QString name);
+    void on_HeaderProfileDropdownChanged(int index);
 
 private:
     Ui::MainWindow *ui;

@@ -18,6 +18,7 @@ namespace Helpers {
     QDir GetApplicationPath();
     bool CheckIfFileExists(QString path);
     QJsonDocument GetFileJSONContents(QString path);
+    QJsonDocument GetFileJSONContents(QFile *file);
 }
 
 #endif // HELPERS_H
