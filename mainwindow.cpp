@@ -302,8 +302,11 @@ void MainWindow::on_StatusControlsReset_clicked() {
 
 // MIDI callbacks
 void MainWindow::OnMidiKeyDown(unsigned int key) {
-    ui->StatusPressedKey->setText("KEY " + QString::number(key));
-    ui->StatusPressedChord->setText(this->MIDI->GetChordFromKey(key));
+    if (this->_pressedKey != key) {
+        ui->StatusPressedKey->setText("KEY " + QString::number(key));
+        ui->StatusPressedChord->setText(this->MIDI->GetChordFromKey(key));
+        this->_pressedKey = key;
+    }
 
     QString action = this->Settings->GetBinding(key);
     if (!action.isEmpty()) {

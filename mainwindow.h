@@ -62,6 +62,7 @@ private:
     QMap<QPushButton*, int> _buttonIdentifiers;
     ModalWidget *_volumeModal = nullptr;
     QTimer *_trackTimer;
+    unsigned int _pressedKey = 0;
 
     void _addMidiDevicesToSelectionList();
     void _addAudioDevicesToSelectionList();
