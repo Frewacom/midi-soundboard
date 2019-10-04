@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
-
+//Tjena, forkade detta repo bara /Fadde
 // Absolutely disgusting
 MainWindow *w;
 
